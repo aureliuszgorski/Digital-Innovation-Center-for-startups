@@ -1,0 +1,6 @@
+▲ Next.js 16.2.9 (Turbopack)
+- Local:         http://localhost:8000
+- Network:       http://192.168.100.236:8000
+✓ Ready in 222ms
+
+ HEAD / 200 in 1027ms (next.js: 913ms, application-code: 114ms)
