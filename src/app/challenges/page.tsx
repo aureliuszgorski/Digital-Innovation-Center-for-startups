@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { CHALLENGES, Challenge } from '@/data/challenges';
 import { 
   Search, Star, Clock, Trophy, X, Sparkles, 
-  ArrowUpRight, BookOpen, Compass, ShieldAlert, Award, Lock
+  ArrowUpRight, BookOpen, Compass, ShieldAlert, Award
 } from 'lucide-react';
 
 export default function ChallengesPage() {
@@ -13,9 +13,6 @@ export default function ChallengesPage() {
   const [starredIds, setStarredIds] = useState<string[]>([]);
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<'browse' | 'methodology'>('browse');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
 
   // Load starred challenges from localStorage on mount
   useEffect(() => {
@@ -28,13 +25,6 @@ export default function ChallengesPage() {
         console.error('Error parsing starred challenges', e);
       }
     }
-
-    // Check session authentication
-    const isAuth = sessionStorage.getItem('challenges-auth');
-    if (isAuth === 'keepbuilding') {
-      setIsAuthenticated(true);
-    }
-
     setTimeout(() => {
       setStarredIds(parsed);
       setMounted(true);
@@ -52,17 +42,6 @@ export default function ChallengesPage() {
     }
     setStarredIds(updated);
     localStorage.setItem('starred-challenges', JSON.stringify(updated));
-  };
-
-  const handlePasswordSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password === 'keepbuilding') {
-      setIsAuthenticated(true);
-      sessionStorage.setItem('challenges-auth', 'keepbuilding');
-      setError('');
-    } else {
-      setError('Invalid password. Access denied.');
-    }
   };
 
   const categories = [
@@ -140,52 +119,6 @@ export default function ChallengesPage() {
     return (
       <div className="min-h-[50vh] flex items-center justify-center">
         <div className="w-8 h-8 rounded-full border-2 border-white/10 border-t-[#B4F052] animate-spin" />
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-[70vh] flex items-center justify-center px-4 animate-fade-in">
-        <div className="glass-card p-8 max-w-md w-full border-[#B4F052]/20 shadow-[0_0_50px_rgba(180,240,82,0.05)] text-center relative overflow-hidden">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-32 bg-[#B4F052]/5 rounded-full blur-2xl pointer-events-none" />
-          
-          <div className="w-16 h-16 rounded-2xl bg-[#B4F052]/10 border border-[#B4F052]/20 flex items-center justify-center text-[#B4F052] mx-auto mb-6 shadow-inner animate-bounce">
-            <Lock size={28} />
-          </div>
-          
-          <h2 className="text-2xl font-black tracking-tight text-white mb-2 uppercase">
-            Restricted Access
-          </h2>
-          <p className="text-white/60 text-xs mb-6 max-w-xs mx-auto leading-relaxed">
-            Enter the password to unlock the 100 Ambitious & Feasible Startup Challenges Portfolio.
-          </p>
-          
-          <form onSubmit={handlePasswordSubmit} className="space-y-4">
-            <div className="relative">
-              <input
-                type="password"
-                placeholder="Enter password..."
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-white/[0.03] border border-white/[0.08] hover:border-white/20 focus:border-[#B4F052]/50 focus:bg-white/[0.05] text-white rounded-xl py-3 px-4 text-xs font-semibold text-center outline-none transition-all tracking-widest"
-              />
-            </div>
-            
-            {error && (
-              <p className="text-red-400 text-[11px] font-semibold animate-fade-in">
-                {error}
-              </p>
-            )}
-            
-            <button
-              type="submit"
-              className="w-full py-3 bg-[#B4F052] text-black font-extrabold rounded-xl text-xs hover:opacity-95 shadow-lg shadow-[#B4F052]/10 hover:shadow-[#B4F052]/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
-            >
-              Unlock Portfolio
-            </button>
-          </form>
-        </div>
       </div>
     );
   }
