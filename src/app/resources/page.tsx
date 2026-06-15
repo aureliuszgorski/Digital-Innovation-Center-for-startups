@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { useGarage } from '@/context/GarageContext';
 import { 
-  Sparkles, Lock, Unlock, Coins, Briefcase, 
-  ArrowUpRight, Check, X, Award
+  Sparkles, Lock, Unlock, 
+  ArrowUpRight, Check, X
 } from 'lucide-react';
 
 interface Resource {
@@ -111,8 +111,6 @@ export default function ResourcesPage() {
     setSubmitSuccess(true);
   };
 
-  const eligibleCount = resources.filter(r => r.checkEligible(totalCompleted, completedTasks)).length;
-
   return (
     <div className="max-w-6xl mx-auto pb-12 relative animate-fade-in">
       {/* Header */}
@@ -126,37 +124,6 @@ export default function ResourcesPage() {
           Unlock pre-negotiated infrastructure credits, GPU/AI compute support, and direct seed-funding checks as you build, launch, and scale through the 100 tasks.
         </p>
       </div>
-
-      {/* Overview Stats */}
-      {mounted && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="glass-card p-5 flex items-center justify-between border-white/[0.06]">
-            <div>
-              <div className="text-xs text-white/40 uppercase font-medium">Total Capital Value</div>
-              <div className="text-2xl font-bold mt-1 text-[#B4F052]">$1,125,000</div>
-            </div>
-            <Coins className="text-[#B4F052]/20" size={32} />
-          </div>
-          <div className="glass-card p-5 flex items-center justify-between border-white/[0.06]">
-            <div>
-              <div className="text-xs text-white/40 uppercase font-medium">Currently Eligible</div>
-              <div className="text-2xl font-bold mt-1 text-white">
-                {eligibleCount} / {resources.length}
-              </div>
-            </div>
-            <Award className="text-white/20" size={32} />
-          </div>
-          <div className="glass-card p-5 flex items-center justify-between border-white/[0.06]">
-            <div>
-              <div className="text-xs text-white/40 uppercase font-medium">Applications Submitted</div>
-              <div className="text-2xl font-bold mt-1 text-white">
-                {appliedResources.length}
-              </div>
-            </div>
-            <Briefcase className="text-white/20" size={32} />
-          </div>
-        </div>
-      )}
 
       {/* Main Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

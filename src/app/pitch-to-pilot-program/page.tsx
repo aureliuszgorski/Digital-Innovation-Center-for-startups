@@ -19,19 +19,12 @@ export default function PitchToPilotProgramPage() {
   // ROI variables
   const [hoursSavedPerWeek, setHoursSavedPerWeek] = useState(15);
   const [employeeLaborRate, setEmployeeLaborRate] = useState(45);
-  const [weeklySavings, setWeeklySavings] = useState(675);
-  const [totalPilotSavings, setTotalPilotSavings] = useState(2700);
+  const weeklySavings = hoursSavedPerWeek * employeeLaborRate;
+  const totalPilotSavings = weeklySavings * pilotWeeks;
 
   // Slide state
   const [activeSlide, setActiveSlide] = useState(0);
   const [copied, setCopied] = useState(false);
-
-  // Recalculate ROI whenever hours or rate changes
-  useEffect(() => {
-    const weekly = hoursSavedPerWeek * employeeLaborRate;
-    setWeeklySavings(weekly);
-    setTotalPilotSavings(weekly * pilotWeeks);
-  }, [hoursSavedPerWeek, employeeLaborRate, pilotWeeks]);
 
   const slidesCount = 5;
 

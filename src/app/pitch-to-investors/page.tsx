@@ -44,9 +44,9 @@ export default function PitchToInvestorsPage() {
   const [customersY2, setCustomersY2] = useState(45);
   const [customersY3, setCustomersY3] = useState(180);
 
-  const [revY1, setRevY1] = useState(240000);
-  const [revY2, setRevY2] = useState(1080000);
-  const [revY3, setRevY3] = useState(4320000);
+  const revY1 = annualContractValue * customersY1;
+  const revY2 = annualContractValue * customersY2;
+  const revY3 = annualContractValue * customersY3;
 
   // Funding ask input
   const [fundingAsk, setFundingAsk] = useState(1200000); // $1.2M
@@ -57,12 +57,6 @@ export default function PitchToInvestorsPage() {
 
   // Q&A simulator state
   const [revealedQ, setRevealedQ] = useState<Record<number, boolean>>({});
-
-  useEffect(() => {
-    setRevY1(annualContractValue * customersY1);
-    setRevY2(annualContractValue * customersY2);
-    setRevY3(annualContractValue * customersY3);
-  }, [annualContractValue, customersY1, customersY2, customersY3]);
 
   const toggleRevealQ = (idx: number) => {
     setRevealedQ(prev => ({ ...prev, [idx]: !prev[idx] }));

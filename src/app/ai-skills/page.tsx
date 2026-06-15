@@ -285,8 +285,8 @@ export default function AISkillsPage() {
             </p>
             <div className="p-4 rounded-xl bg-black border border-white/[0.08] mt-2">
               <p className="text-white/80 text-xs font-semibold leading-relaxed">
-                "The goal is not to replace you. <br />
-                <span className="text-[#B4F052] font-extrabold">The goal is to make you a much more capable founder.</span>"
+                &quot;The goal is not to replace you. <br />
+                <span className="text-[#B4F052] font-extrabold">The goal is to make you a much more capable founder.</span>&quot;
               </p>
             </div>
           </div>

@@ -15,7 +15,9 @@ export default function ClientShell({ children }: { children: React.ReactNode })
     // Check session authentication
     const isAuth = sessionStorage.getItem('site-auth');
     if (isAuth === 'keepbuilding') {
-      setIsAuthenticated(true);
+      setTimeout(() => {
+        setIsAuthenticated(true);
+      }, 0);
     }
     setTimeout(() => {
       setMounted(true);

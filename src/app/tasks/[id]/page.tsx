@@ -1,9 +1,10 @@
 'use client';
-import { useState, use, useEffect } from 'react';
+import { useState, use } from 'react';
 import Link from 'next/link';
 import { getTask, TYPE_COLORS, STAGE_COLORS } from '@/data/tasks';
 import { useGarage } from '@/context/GarageContext';
 import { Brain, BarChart3, Swords, Microscope, PenTool, ClipboardList, Code2, X, Send, Check, Star, ChevronLeft, ChevronRight, FileText, Sparkles } from 'lucide-react';
+import TaskInfographic from '@/components/TaskInfographic';
 
 const AI_ROLES = [
   { id: 'mentor', label: 'Mentor', icon: Brain, desc: 'Strategic coaching and guidance' },
@@ -151,12 +152,14 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
   const [activeSlideIdx, setActiveSlideIdx] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [showTextAlt, setShowTextAlt] = useState(false);
+  const [showPlainTextView, setShowPlainTextView] = useState(false);
 
   if (taskNum !== prevTaskNum) {
     setPrevTaskNum(taskNum);
     setActiveSlideIdx(0);
     setIsLightboxOpen(false);
     setShowTextAlt(false);
+    setShowPlainTextView(false);
   }
 
   if (!task) return <div className="text-center py-20 text-white/40">Task not found</div>;
@@ -276,7 +279,7 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
 
           {/* Collapsible Slide Text Alternative */}
           {task.slidesContent && task.slidesContent.length > 0 && (
-            <div className="mt-4">
+            <div className="mt-4 space-y-4">
               <button
                 onClick={() => setShowTextAlt(!showTextAlt)}
                 className="w-full flex items-center justify-between px-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:bg-white/[0.06] transition-all text-xs font-semibold text-white/70 hover:text-white"
@@ -286,34 +289,53 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
               </button>
 
               {showTextAlt && (
-                <div className="mt-4 p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-3">
-                  {task.slidesContent.map((line, index) => {
-                    const trimmed = line.trim();
-                    if (!trimmed) return null;
-                    
-                    if (trimmed.startsWith("Example") || trimmed.startsWith("Example:")) {
-                      return (
-                        <div key={index} className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] border-l-2 border-l-[#B4F052]/50 my-2 text-sm text-white/70 italic">
-                          {line}
-                        </div>
-                      );
-                    }
-                    
-                    if (trimmed.startsWith("Key Principles") || trimmed.startsWith("Important!") || trimmed.endsWith(":")) {
-                      return (
-                        <div key={index} className="text-sm font-semibold text-[#B4F052]/80 mt-4 mb-2 first:mt-0">
-                          {line}
-                        </div>
-                      );
-                    }
-                    
-                    return (
-                      <div key={index} className="flex items-start gap-2.5 text-sm text-white/80 leading-relaxed">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#B4F052] mt-2 flex-shrink-0" />
-                        <span>{line}</span>
+                <div className="space-y-4 animate-slide-down">
+                  {/* Custom Handcrafted Infographic Diagram */}
+                  <div className="p-1 rounded-xl border border-white/[0.06] bg-black/20">
+                    <TaskInfographic taskNumber={taskNum} />
+                  </div>
+
+                  {/* Toggle for Plain Text View */}
+                  <div className="border border-white/[0.08] rounded-xl overflow-hidden">
+                    <button
+                      onClick={() => setShowPlainTextView(!showPlainTextView)}
+                      className="w-full flex items-center justify-between px-4 py-2 bg-white/[0.02] hover:bg-white/[0.04] transition-all text-xs font-semibold text-white/50 hover:text-white"
+                    >
+                      <span>Plain Text View (Accessibility)</span>
+                      {showPlainTextView ? <ChevronRight size={12} className="rotate-90 transition-transform" /> : <ChevronRight size={12} className="transition-transform" />}
+                    </button>
+                    {showPlainTextView && (
+                      <div className="p-4 bg-white/[0.01] border-t border-white/[0.06] space-y-3 max-h-96 overflow-y-auto">
+                        {task.slidesContent.map((line, index) => {
+                          const trimmed = line.trim();
+                          if (!trimmed) return null;
+                          
+                          if (trimmed.startsWith("Example") || trimmed.startsWith("Example:")) {
+                            return (
+                              <div key={index} className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] border-l-2 border-l-[#B4F052]/50 my-2 text-sm text-white/70 italic">
+                                {line}
+                              </div>
+                            );
+                          }
+                          
+                          if (trimmed.startsWith("Key Principles") || trimmed.startsWith("Important!") || trimmed.endsWith(":")) {
+                            return (
+                              <div key={index} className="text-sm font-semibold text-[#B4F052]/80 mt-4 mb-2 first:mt-0">
+                                {line}
+                              </div>
+                            );
+                          }
+                          
+                          return (
+                            <div key={index} className="flex items-start gap-2.5 text-sm text-white/80 leading-relaxed">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#B4F052] mt-2 flex-shrink-0" />
+                              <span>{line}</span>
+                            </div>
+                          );
+                        })}
                       </div>
-                    );
-                  })}
+                    )}
+                  </div>
                 </div>
               )}
             </div>
