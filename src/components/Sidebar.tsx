@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
   LayoutDashboard, ListChecks, CalendarDays, Trophy, Crown, 
-  Users, Globe, Brain, Presentation, Briefcase 
+  Users, Globe, Brain, Presentation, Briefcase, Layers 
 } from 'lucide-react';
 
 const GROUPS = [
@@ -22,6 +22,7 @@ const GROUPS = [
     items: [
       { href: '/challenges', label: 'Challenges', icon: Globe },
       { href: '/coworking', label: 'Coworking', icon: Users },
+      { href: '/resources', label: 'Resources', icon: Layers },
       { href: '/pitch-to-pilot-program', label: 'Pitch to pilot program', icon: Presentation },
       { href: '/pitch-to-investors', label: 'Pitch to investors', icon: Briefcase },
     ]
