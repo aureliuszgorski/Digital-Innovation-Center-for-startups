@@ -92,22 +92,6 @@ export default function ResourcesPage() {
       checkEligible: (count) => count >= 40,
       progressText: (count) => `${count} / 40 Tasks`,
       progressPercent: (count) => Math.min(100, Math.round((count / 40) * 100))
-    },
-    {
-      id: 'investors-1m',
-      title: 'Up to $1M MVP Funding',
-      value: 'Up to $1,000,000',
-      partner: "Investor's Lounge",
-      partnerDetails: 'Strategic Syndicate Partner',
-      description: 'Seed capital to commercialize your product, expand your client pipeline, and transition from MVP to a scaling enterprise. Direct pitch-deck review and feedback from lead partners.',
-      requirementText: 'Requires reaching the SCALE stage (completing at least 70 tasks).',
-      accentColor: '#a855f7', // Scale stage purple
-      stageColor: 'rgba(168, 85, 247, 0.12)',
-      stageName: 'SCALE STAGE',
-      type: 'Venture Capital',
-      checkEligible: (count) => count >= 70,
-      progressText: (count) => `${count} / 70 Tasks`,
-      progressPercent: (count) => Math.min(100, Math.round((count / 70) * 100))
     }
   ];
 

@@ -59,3 +59,4 @@
  GET /sprints 200 in 9ms (next.js: 695µs, application-code: 8ms)
  GET /sprints 200 in 61ms (next.js: 47ms, application-code: 14ms)
  GET /resources 200 in 354ms (next.js: 341ms, application-code: 13ms)
+ GET /resources 200 in 53ms (next.js: 41ms, application-code: 12ms)
