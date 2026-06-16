@@ -4,6 +4,7 @@ import { useGarage } from '@/context/GarageContext';
 import { Check, ArrowRight, Layers, Info, Trash2, Plus, Star, AlertTriangle, Sparkles, Activity, FileText, ChevronDown, ChevronUp } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import PhasePDFGenerator from '@/components/PhasePDFGenerator';
 
 interface Task3Statement {
   targetCustomer: string;
@@ -1449,6 +1450,7 @@ export default function Task4Redesign() {
                 <Check size={16} /> Complete Task 4 and continue to Task 5
               </button>
             </div>
+            <PhasePDFGenerator phase={1} />
             <p className="text-[10px] text-white/40 mt-3 text-right">
               In the next task, you will use this customer understanding to define vision, mission and core values.
             </p>

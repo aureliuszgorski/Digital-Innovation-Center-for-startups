@@ -15,6 +15,9 @@ import Task7Redesign from '@/components/Task7Redesign';
 import Task8Redesign from '@/components/Task8Redesign';
 import Task9Redesign from '@/components/Task9Redesign';
 import Task10Redesign from '@/components/Task10Redesign';
+import Task11Redesign from '@/components/Task11Redesign';
+import Task12Redesign from '@/components/Task12Redesign';
+import Task13Redesign from '@/components/Task13Redesign';
 
 const AI_ROLES = [
   { id: 'mentor', label: 'Mentor', icon: Brain, desc: 'Strategic coaching and guidance' },
@@ -312,6 +315,33 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
       <>
         <Task10Redesign />
         <AIMentorPanel taskNum={10} taskTitle={task.title} />
+      </>
+    );
+  }
+
+  if (taskNum === 11) {
+    return (
+      <>
+        <Task11Redesign />
+        <AIMentorPanel taskNum={11} taskTitle={task.title} />
+      </>
+    );
+  }
+
+  if (taskNum === 12) {
+    return (
+      <>
+        <Task12Redesign />
+        <AIMentorPanel taskNum={12} taskTitle={task.title} />
+      </>
+    );
+  }
+
+  if (taskNum === 13) {
+    return (
+      <>
+        <Task13Redesign />
+        <AIMentorPanel taskNum={13} taskTitle={task.title} />
       </>
     );
   }

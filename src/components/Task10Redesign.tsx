@@ -5,6 +5,7 @@ import { useGarage } from '@/context/GarageContext';
 import { Check, ArrowRight, Layers, Star, AlertTriangle, Sparkles, FileText, Save, Info, Brain, Activity, User, ShieldAlert, Zap, ClipboardList, BookOpen, Clock, Heart, Award, Copy, CheckSquare, Search, MessageSquare, Plus, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import PhasePDFGenerator from '@/components/PhasePDFGenerator';
 
 interface MentorshipNeed {
   area: string;
@@ -943,6 +944,7 @@ ${outreachMessageDraft}
                 <Check size={14} />
                 Complete Task 10 & Sync
               </button>
+              <PhasePDFGenerator phase={3} />
             </div>
           </div>
         </div>

@@ -3,13 +3,21 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { TASKS, STAGES, SUB_STAGES, TYPE_COLORS, STAGE_COLORS } from '@/data/tasks';
 import { useGarage } from '@/context/GarageContext';
-import { Check, ChevronRight, ChevronDown, Star } from 'lucide-react';
+import { Check, ChevronRight, ChevronDown, Star, Download } from 'lucide-react';
+import PhasePDFGenerator from '@/components/PhasePDFGenerator';
 
 export default function TasksPage() {
   const { completedTasks, completeTask, uncompleteTask } = useGarage();
   const [activeStage, setActiveStage] = useState<'ALL'|'SETUP'|'LAUNCH'|'SCALE'>('ALL');
   const [search, setSearch] = useState('');
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
+
+  const PHASE_PDF_MAP: Record<string, 1|2|3|4> = {
+    'Start with Problems': 1,
+    'Plan Mission': 2,
+    'Assemble Core Team': 3,
+    'Collect Ideas': 4,
+  };
 
   const stageTasks = activeStage === 'ALL' ? TASKS : TASKS.filter(t => t.stage === activeStage);
   const filtered = search ? stageTasks.filter(t => t.title.toLowerCase().includes(search.toLowerCase())) : stageTasks;
@@ -99,6 +107,11 @@ export default function TasksPage() {
                     </div>
                   );
                 })}
+                {PHASE_PDF_MAP[ss.name] && (
+                  <div className="mt-3 mb-1 flex justify-end">
+                    <PhasePDFGenerator phase={PHASE_PDF_MAP[ss.name]} />
+                  </div>
+                )}
               </div>
             )}
           </div>

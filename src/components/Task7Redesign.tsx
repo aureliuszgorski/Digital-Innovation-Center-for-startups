@@ -4,6 +4,7 @@ import { useGarage } from '@/context/GarageContext';
 import { Check, ArrowRight, Layers, Trash2, Star, AlertTriangle, Sparkles, FileText, Filter, RefreshCw, GitCommit, ChevronRight, Save } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import PhasePDFGenerator from '@/components/PhasePDFGenerator';
 
 interface Milestone {
   id: string;
@@ -688,6 +689,7 @@ export default function Task7Redesign() {
                 <Check size={14} />
                 Complete Task 7 & Finalize
               </button>
+              <PhasePDFGenerator phase={2} />
             </div>
 
           </div>
