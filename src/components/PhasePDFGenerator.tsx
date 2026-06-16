@@ -8,7 +8,6 @@ import autoTable from 'jspdf-autotable';
 const ACCENT = [180, 240, 82]; // #B4F052
 const DARK = [18, 18, 18];
 const HEADER_BG: [number, number, number] = [30, 30, 30];
-const ALT_ROW: [number, number, number] = [24, 24, 24];
 
 function safeParse<T>(raw: string, fallback: T): T {
   if (!raw) return fallback;
@@ -686,6 +685,633 @@ function generatePhase4(doc: jsPDF, getTaskInput: (t: number, f: string) => stri
   y = addText(doc, getTaskInput(13, 'teamComments') || 'No team comments recorded.', y);
 }
 
+
+
+// ═══════════════════════════════════════════
+// PHASE 5 TYPES
+// ═══════════════════════════════════════════
+interface ShortlistedIdea {
+  ideaId: string;
+  rank: number;
+  whyShortlisted: string;
+  whatMakesItPromising: string;
+  biggestRisk: string;
+  keyAssumption: string;
+  nextAnalysisTask: string;
+}
+
+interface ParkedRejectedIdea {
+  ideaId: string;
+  status: string;
+  reason: string;
+  revisitCondition: string;
+}
+
+interface StrongestLever {
+  ideaId: string;
+  innovationType: string;
+  whyItMatters: string;
+  howItCreatesDifferentiation: string;
+  whatMustBeTrue: string;
+  riskOrUncertainty?: string;
+}
+
+interface InnovationScore {
+  ideaId: string;
+  innovationDepth: number;
+  differentiationPotential: number;
+  customerValue: number;
+  businessModelStrength: number;
+  executionFeasibility: number;
+  totalScore: number;
+}
+
+interface CompetitorMap {
+  ideaId: string;
+  directCompetitors: string;
+  indirectAlternatives: string;
+  currentWorkaround: string;
+  doNothingCost: string;
+}
+
+interface ERRCGrid {
+  ideaId: string;
+  eliminate: string;
+  reduce: string;
+  raise: string;
+  create: string;
+}
+
+interface DifferentiationLogic {
+  ideaId: string;
+  insteadOfCompetingOn: string;
+  weCompeteBy: string;
+  soTargetCustomerCan: string;
+  withLessPainCost: string;
+}
+
+interface BlueOceanScore {
+  ideaId: string;
+  valueInnovation: number;
+  differentiationClarity: number;
+  nonCustomerPotential: number;
+  competitionAvoidance: number;
+  costAdvantage: number;
+  adoptionSimplicity: number;
+  totalScore: number;
+}
+
+interface BMCCanvas {
+  ideaId: string;
+  keyPartners: string;
+  keyActivities: string;
+  keyResources: string;
+  valuePropositions: string;
+  customerRelationships: string;
+  channels: string;
+  customerSegments: string;
+  costStructure: string;
+  revenueStreams: string;
+}
+
+interface VPCCanvas {
+  ideaId: string;
+  customerJobs: string;
+  customerPains: string;
+  customerGains: string;
+  productsServices: string;
+  painRelievers: string;
+  gainCreators: string;
+}
+
+interface CanvasRisk {
+  ideaId: string;
+  assumptions: string;
+  criticalRisks: string;
+  mitigationPlan: string;
+}
+
+interface HypothesisStatus {
+  ideaId: string;
+  personaHypothesis: string;
+  problemHypothesis: string;
+  valueHypothesis: string;
+}
+
+interface Interview {
+  customerName: string;
+  customerRole: string;
+  companyName: string;
+  ideaId: string;
+  painValidation: string;
+  verbatimQuote: string;
+  notes: string;
+}
+
+interface RankedIdea {
+  ideaId: string;
+  rank: number;
+  rationale: string;
+  riskRating: string;
+  feasibilityRating: string;
+}
+
+interface SelectionDetails {
+  championRationale?: string;
+  contingencyPlan?: string;
+  immediateMilestone?: string;
+}
+
+interface ValidationRow {
+  assumption: string;
+  type: string;
+  method: string;
+  targetMetric: string;
+  status: string;
+}
+
+interface WireframeScreen {
+  title: string;
+  description: string;
+  components: string;
+}
+
+// ═══════════════════════════════════════════
+// PHASE 5: Business Model Determination Report
+// ═══════════════════════════════════════════
+function generatePhase5(doc: jsPDF, getTaskInput: (t: number, f: string) => string) {
+  createTitlePage(doc, 'Business Model Determination', 'Phase 5 Summary — Tasks 14 through 20');
+  let y = 20;
+
+  // Build a helper map for shortlisted idea names using Task 13's ideasLongList
+  const ideasLongList = safeParse<Array<{id?: string; name?: string}>>(getTaskInput(13, 'ideasLongList'), []);
+  const ideaNameMap = new Map<string, string>();
+  ideasLongList.forEach(idea => {
+    if (idea.id && idea.name) {
+      ideaNameMap.set(idea.id, idea.name);
+    }
+  });
+
+  const getIdeaName = (ideaId: string): string => {
+    if (ideaNameMap.has(ideaId)) return ideaNameMap.get(ideaId) || ideaId;
+    const normalizedCards = safeParse<Array<{ideaId: string; ideaName: string}>>(getTaskInput(14, 'normalizedIdeaCards'), []);
+    const card = normalizedCards.find(c => c.ideaId === ideaId);
+    if (card && card.ideaName) return card.ideaName;
+    return ideaId;
+  };
+
+  // Fetch all required keys for Tasks 14-20
+  getTaskInput(14, 'normalizedIdeaCards');
+  getTaskInput(14, 'firstPassFilter');
+  getTaskInput(14, 'ideaScores');
+  const shortlistedIdeas = safeParse<ShortlistedIdea[]>(getTaskInput(14, 'shortlistedIdeas'), []);
+  const parkedRejectedIdeas = safeParse<ParkedRejectedIdea[]>(getTaskInput(14, 'parkedRejectedIdeas'), []);
+
+  getTaskInput(15, 'tenTypesAnalysis');
+  const strongestInnovationLevers = safeParse<StrongestLever[]>(getTaskInput(15, 'strongestInnovationLevers'), []);
+  const innovationPotentialScores = safeParse<InnovationScore[]>(getTaskInput(15, 'innovationPotentialScores'), []);
+  getTaskInput(15, 'weakInnovationAreas');
+
+  const competitorMap = safeParse<CompetitorMap[]>(getTaskInput(16, 'competitorMap'), []);
+  getTaskInput(16, 'valueFactors');
+  getTaskInput(16, 'strategyCanvasScores');
+  const errcGrid = safeParse<ERRCGrid[]>(getTaskInput(16, 'errcGrid'), []);
+  const differentiationLogic = safeParse<DifferentiationLogic[]>(getTaskInput(16, 'differentiationLogic'), []);
+  const blueOceanScores = safeParse<BlueOceanScore[]>(getTaskInput(16, 'blueOceanScores'), []);
+
+  const businessModelCanvases = safeParse<BMCCanvas[]>(getTaskInput(17, 'businessModelCanvases'), []);
+  const valuePropositionCanvases = safeParse<VPCCanvas[]>(getTaskInput(17, 'valuePropositionCanvases'), []);
+  const canvasRisks = safeParse<CanvasRisk[]>(getTaskInput(17, 'canvasRisks'), []);
+
+  getTaskInput(18, 'questionnaires');
+  const interviewsList = safeParse<Interview[]>(getTaskInput(18, 'interviewsList'), []);
+  const hypothesisStatuses = safeParse<HypothesisStatus[]>(getTaskInput(18, 'hypothesisStatuses'), []);
+
+  const finalShortlistRankings = safeParse<RankedIdea[]>(getTaskInput(19, 'finalShortlistRankings'), []);
+  const championSelectionDetails = safeParse<SelectionDetails>(getTaskInput(19, 'championSelectionDetails'), {});
+  const winningBusinessModelName = getTaskInput(19, 'winningBusinessModelName') || '';
+
+  const pocScopeDetails = getTaskInput(20, 'pocScopeDetails') || '';
+  const feasibilityValidationMatrix = safeParse<ValidationRow[]>(getTaskInput(20, 'feasibilityValidationMatrix'), []);
+  const wireframeScreens = safeParse<WireframeScreen[]>(getTaskInput(20, 'wireframeScreens'), []);
+  const failConditions = getTaskInput(20, 'failConditions') || '';
+
+  // --- Task 14: Shortlisted Ideas (table) ---
+  y = addHeader(doc, '1. Shortlisted Ideas (Task 14)', y);
+  if (shortlistedIdeas.length > 0) {
+    autoTable(doc, {
+      startY: y,
+      head: [['Rank', 'Idea Name', 'Why Shortlisted', 'Key Assumption', 'Biggest Risk']],
+      body: shortlistedIdeas.map(s => [
+        String(s.rank || ''),
+        getIdeaName(s.ideaId),
+        s.whyShortlisted || '—',
+        s.keyAssumption || '—',
+        s.biggestRisk || '—'
+      ]),
+      theme: 'grid',
+      headStyles: { fillColor: HEADER_BG, textColor: [ACCENT[0], ACCENT[1], ACCENT[2]], fontSize: 8 },
+      bodyStyles: { fontSize: 7, textColor: [60, 60, 60] },
+      alternateRowStyles: { fillColor: [245, 245, 245] },
+      margin: { left: 14, right: 14 },
+    });
+    y = (doc as unknown as {lastAutoTable: {finalY: number}}).lastAutoTable.finalY + 10;
+  } else {
+    y = addText(doc, 'No shortlisted ideas recorded.', y, { italic: true });
+  }
+
+  // --- Task 14: Parked/Rejected Ideas (table) ---
+  y = checkPage(doc, y, 40);
+  y = addHeader(doc, '2. Parked & Rejected Ideas (Task 14)', y);
+  if (parkedRejectedIdeas.length > 0) {
+    autoTable(doc, {
+      startY: y,
+      head: [['Idea Name', 'Status', 'Reason', 'Revisit Condition']],
+      body: parkedRejectedIdeas.map(p => [
+        getIdeaName(p.ideaId),
+        p.status || '—',
+        p.reason || '—',
+        p.revisitCondition || '—'
+      ]),
+      theme: 'grid',
+      headStyles: { fillColor: HEADER_BG, textColor: [ACCENT[0], ACCENT[1], ACCENT[2]], fontSize: 8 },
+      bodyStyles: { fontSize: 7, textColor: [60, 60, 60] },
+      alternateRowStyles: { fillColor: [245, 245, 245] },
+      margin: { left: 14, right: 14 },
+    });
+    y = (doc as unknown as {lastAutoTable: {finalY: number}}).lastAutoTable.finalY + 10;
+  } else {
+    y = addText(doc, 'No parked or rejected ideas recorded.', y, { italic: true });
+  }
+
+  // --- Task 15: Innovation Analysis (strongest levers, scores) ---
+  doc.addPage();
+  y = 20;
+  y = addHeader(doc, '3. Innovation Analysis (Task 15)', y);
+  if (strongestInnovationLevers.length > 0) {
+    y = addSubHeader(doc, 'Strongest Innovation Levers', y);
+    autoTable(doc, {
+      startY: y,
+      head: [['Idea Name', 'Innovation Type', 'Why It Matters', 'Differentiation Logic', 'What Must Be True']],
+      body: strongestInnovationLevers.map(l => [
+        getIdeaName(l.ideaId),
+        l.innovationType || '—',
+        l.whyItMatters || '—',
+        l.howItCreatesDifferentiation || '—',
+        l.whatMustBeTrue || '—'
+      ]),
+      theme: 'grid',
+      headStyles: { fillColor: HEADER_BG, textColor: [ACCENT[0], ACCENT[1], ACCENT[2]], fontSize: 8 },
+      bodyStyles: { fontSize: 7, textColor: [60, 60, 60] },
+      alternateRowStyles: { fillColor: [245, 245, 245] },
+      margin: { left: 14, right: 14 },
+    });
+    y = (doc as unknown as {lastAutoTable: {finalY: number}}).lastAutoTable.finalY + 8;
+  }
+
+  if (innovationPotentialScores.length > 0) {
+    y = checkPage(doc, y, 40);
+    y = addSubHeader(doc, 'Innovation Potential Scores', y);
+    autoTable(doc, {
+      startY: y,
+      head: [['Idea Name', 'Depth', 'Differentiation', 'Customer Value', 'Biz Model Strength', 'Feasibility', 'Total Score']],
+      body: innovationPotentialScores.map(s => [
+        getIdeaName(s.ideaId),
+        String(s.innovationDepth || 0),
+        String(s.differentiationPotential || 0),
+        String(s.customerValue || 0),
+        String(s.businessModelStrength || 0),
+        String(s.executionFeasibility || 0),
+        String(s.totalScore || 0)
+      ]),
+      theme: 'grid',
+      headStyles: { fillColor: HEADER_BG, textColor: [ACCENT[0], ACCENT[1], ACCENT[2]], fontSize: 8 },
+      bodyStyles: { fontSize: 7, textColor: [60, 60, 60] },
+      alternateRowStyles: { fillColor: [245, 245, 245] },
+      margin: { left: 14, right: 14 },
+    });
+    y = (doc as unknown as {lastAutoTable: {finalY: number}}).lastAutoTable.finalY + 10;
+  }
+
+  // --- Task 16: Blue Ocean Strategy ---
+  doc.addPage();
+  y = 20;
+  y = addHeader(doc, '4. Blue Ocean Strategy (Task 16)', y);
+
+  if (competitorMap.length > 0) {
+    y = addSubHeader(doc, 'Competitor Map', y);
+    autoTable(doc, {
+      startY: y,
+      head: [['Idea Name', 'Direct Competitors', 'Indirect Alternatives', 'Current Workaround', 'Cost of Do Nothing']],
+      body: competitorMap.map(c => [
+        getIdeaName(c.ideaId),
+        c.directCompetitors || '—',
+        c.indirectAlternatives || '—',
+        c.currentWorkaround || '—',
+        c.doNothingCost || '—'
+      ]),
+      theme: 'grid',
+      headStyles: { fillColor: HEADER_BG, textColor: [ACCENT[0], ACCENT[1], ACCENT[2]], fontSize: 8 },
+      bodyStyles: { fontSize: 7, textColor: [60, 60, 60] },
+      alternateRowStyles: { fillColor: [245, 245, 245] },
+      margin: { left: 14, right: 14 },
+    });
+    y = (doc as unknown as {lastAutoTable: {finalY: number}}).lastAutoTable.finalY + 8;
+  }
+
+  if (errcGrid.length > 0) {
+    y = checkPage(doc, y, 40);
+    y = addSubHeader(doc, 'ERRC Grid', y);
+    autoTable(doc, {
+      startY: y,
+      head: [['Idea Name', 'Eliminate', 'Reduce', 'Raise', 'Create']],
+      body: errcGrid.map(e => [
+        getIdeaName(e.ideaId),
+        e.eliminate || '—',
+        e.reduce || '—',
+        e.raise || '—',
+        e.create || '—'
+      ]),
+      theme: 'grid',
+      headStyles: { fillColor: HEADER_BG, textColor: [ACCENT[0], ACCENT[1], ACCENT[2]], fontSize: 8 },
+      bodyStyles: { fontSize: 7, textColor: [60, 60, 60] },
+      alternateRowStyles: { fillColor: [245, 245, 245] },
+      margin: { left: 14, right: 14 },
+    });
+    y = (doc as unknown as {lastAutoTable: {finalY: number}}).lastAutoTable.finalY + 8;
+  }
+
+  if (differentiationLogic.length > 0) {
+    y = checkPage(doc, y, 40);
+    y = addSubHeader(doc, 'Differentiation Logic', y);
+    autoTable(doc, {
+      startY: y,
+      head: [['Idea Name', 'Instead of Competing On', 'We Compete By', 'So Customers Can', 'Less Pain/Cost']],
+      body: differentiationLogic.map(d => [
+        getIdeaName(d.ideaId),
+        d.insteadOfCompetingOn || '—',
+        d.weCompeteBy || '—',
+        d.soTargetCustomerCan || '—',
+        d.withLessPainCost || '—'
+      ]),
+      theme: 'grid',
+      headStyles: { fillColor: HEADER_BG, textColor: [ACCENT[0], ACCENT[1], ACCENT[2]], fontSize: 8 },
+      bodyStyles: { fontSize: 7, textColor: [60, 60, 60] },
+      alternateRowStyles: { fillColor: [245, 245, 245] },
+      margin: { left: 14, right: 14 },
+    });
+    y = (doc as unknown as {lastAutoTable: {finalY: number}}).lastAutoTable.finalY + 8;
+  }
+
+  if (blueOceanScores.length > 0) {
+    y = checkPage(doc, y, 40);
+    y = addSubHeader(doc, 'Blue Ocean Scores', y);
+    autoTable(doc, {
+      startY: y,
+      head: [['Idea Name', 'Value Innov.', 'Diff. Clarity', 'Non-Customer', 'Comp. Avoid', 'Cost Adv.', 'Adoption', 'Total']],
+      body: blueOceanScores.map(s => [
+        getIdeaName(s.ideaId),
+        String(s.valueInnovation || 0),
+        String(s.differentiationClarity || 0),
+        String(s.nonCustomerPotential || 0),
+        String(s.competitionAvoidance || 0),
+        String(s.costAdvantage || 0),
+        String(s.adoptionSimplicity || 0),
+        String(s.totalScore || 0)
+      ]),
+      theme: 'grid',
+      headStyles: { fillColor: HEADER_BG, textColor: [ACCENT[0], ACCENT[1], ACCENT[2]], fontSize: 8 },
+      bodyStyles: { fontSize: 7, textColor: [60, 60, 60] },
+      alternateRowStyles: { fillColor: [245, 245, 245] },
+      margin: { left: 14, right: 14 },
+    });
+    y = (doc as unknown as {lastAutoTable: {finalY: number}}).lastAutoTable.finalY + 10;
+  }
+
+  // --- Task 17: Business Model Canvas & VPC summaries ---
+  doc.addPage();
+  y = 20;
+  y = addHeader(doc, '5. Business Model Canvas & VPC (Task 17)', y);
+
+  const canvasesToPrint = shortlistedIdeas.length > 0
+    ? shortlistedIdeas.map(s => s.ideaId)
+    : businessModelCanvases.map(b => b.ideaId);
+
+  canvasesToPrint.forEach(ideaId => {
+    const bmc = businessModelCanvases.find(b => b.ideaId === ideaId);
+    const vpc = valuePropositionCanvases.find(v => v.ideaId === ideaId);
+    const risk = canvasRisks.find(r => r.ideaId === ideaId);
+    const ideaName = getIdeaName(ideaId);
+
+    y = checkPage(doc, y, 50);
+    y = addSubHeader(doc, `Business Model Canvas & VPC: ${ideaName}`, y);
+
+    if (bmc) {
+      autoTable(doc, {
+        startY: y,
+        head: [['BMC Component', 'Description / Details']],
+        body: [
+          ['Key Partners', bmc.keyPartners || '—'],
+          ['Key Activities', bmc.keyActivities || '—'],
+          ['Key Resources', bmc.keyResources || '—'],
+          ['Value Propositions', bmc.valuePropositions || '—'],
+          ['Customer Relationships', bmc.customerRelationships || '—'],
+          ['Channels', bmc.channels || '—'],
+          ['Customer Segments', bmc.customerSegments || '—'],
+          ['Cost Structure', bmc.costStructure || '—'],
+          ['Revenue Streams', bmc.revenueStreams || '—']
+        ],
+        theme: 'grid',
+        headStyles: { fillColor: HEADER_BG, textColor: [ACCENT[0], ACCENT[1], ACCENT[2]], fontSize: 8 },
+        bodyStyles: { fontSize: 7, textColor: [60, 60, 60] },
+        alternateRowStyles: { fillColor: [245, 245, 245] },
+        margin: { left: 14, right: 14 },
+      });
+      y = (doc as unknown as {lastAutoTable: {finalY: number}}).lastAutoTable.finalY + 6;
+    }
+
+    if (vpc) {
+      y = checkPage(doc, y, 40);
+      autoTable(doc, {
+        startY: y,
+        head: [['VPC Component', 'Description / Details']],
+        body: [
+          ['Customer Jobs', vpc.customerJobs || '—'],
+          ['Customer Pains', vpc.customerPains || '—'],
+          ['Customer Gains', vpc.customerGains || '—'],
+          ['Products & Services', vpc.productsServices || '—'],
+          ['Pain Relievers', vpc.painRelievers || '—'],
+          ['Gain Creators', vpc.gainCreators || '—']
+        ],
+        theme: 'grid',
+        headStyles: { fillColor: HEADER_BG, textColor: [ACCENT[0], ACCENT[1], ACCENT[2]], fontSize: 8 },
+        bodyStyles: { fontSize: 7, textColor: [60, 60, 60] },
+        alternateRowStyles: { fillColor: [245, 245, 245] },
+        margin: { left: 14, right: 14 },
+      });
+      y = (doc as unknown as {lastAutoTable: {finalY: number}}).lastAutoTable.finalY + 6;
+    }
+
+    if (risk) {
+      y = checkPage(doc, y, 35);
+      autoTable(doc, {
+        startY: y,
+        head: [['Canvas Risks & Mitigation', 'Details']],
+        body: [
+          ['Key Assumptions', risk.assumptions || '—'],
+          ['Critical Risks Identified', risk.criticalRisks || '—'],
+          ['Mitigation Plan', risk.mitigationPlan || '—']
+        ],
+        theme: 'grid',
+        headStyles: { fillColor: HEADER_BG, textColor: [ACCENT[0], ACCENT[1], ACCENT[2]], fontSize: 8 },
+        bodyStyles: { fontSize: 7, textColor: [60, 60, 60] },
+        alternateRowStyles: { fillColor: [245, 245, 245] },
+        margin: { left: 14, right: 14 },
+      });
+      y = (doc as unknown as {lastAutoTable: {finalY: number}}).lastAutoTable.finalY + 10;
+    }
+  });
+
+  // --- Task 18: Customer Discovery Results ---
+  doc.addPage();
+  y = 20;
+  y = addHeader(doc, '6. Customer Discovery (Task 18)', y);
+
+  if (hypothesisStatuses.length > 0) {
+    y = addSubHeader(doc, 'Hypothesis Validation Statuses', y);
+    autoTable(doc, {
+      startY: y,
+      head: [['Idea Name', 'Persona Hypothesis', 'Problem Hypothesis', 'Value Hypothesis']],
+      body: hypothesisStatuses.map(h => [
+        getIdeaName(h.ideaId),
+        h.personaHypothesis || '—',
+        h.problemHypothesis || '—',
+        h.valueHypothesis || '—'
+      ]),
+      theme: 'grid',
+      headStyles: { fillColor: HEADER_BG, textColor: [ACCENT[0], ACCENT[1], ACCENT[2]], fontSize: 8 },
+      bodyStyles: { fontSize: 7, textColor: [60, 60, 60] },
+      alternateRowStyles: { fillColor: [245, 245, 245] },
+      margin: { left: 14, right: 14 },
+    });
+    y = (doc as unknown as {lastAutoTable: {finalY: number}}).lastAutoTable.finalY + 8;
+  }
+
+  y = checkPage(doc, y, 40);
+  y = addSubHeader(doc, `Logged Interviews (Total: ${interviewsList.length})`, y);
+  if (interviewsList.length > 0) {
+    autoTable(doc, {
+      startY: y,
+      head: [['Idea Name', 'Customer / Role / Company', 'Pain Validation', 'Verbatim Quote / Notes']],
+      body: interviewsList.map(i => [
+        getIdeaName(i.ideaId),
+        `${i.customerName || '—'} (${i.customerRole || '—'} at ${i.companyName || '—'})`,
+        i.painValidation || '—',
+        `Quote: "${i.verbatimQuote || '—'}"\nNotes: ${i.notes || '—'}`
+      ]),
+      theme: 'grid',
+      headStyles: { fillColor: HEADER_BG, textColor: [ACCENT[0], ACCENT[1], ACCENT[2]], fontSize: 8 },
+      bodyStyles: { fontSize: 7, textColor: [60, 60, 60] },
+      alternateRowStyles: { fillColor: [245, 245, 245] },
+      margin: { left: 14, right: 14 },
+    });
+    y = (doc as unknown as {lastAutoTable: {finalY: number}}).lastAutoTable.finalY + 10;
+  } else {
+    y = addText(doc, 'No interviews logged yet.', y, { italic: true });
+  }
+
+  // --- Task 19: Final Selection ---
+  doc.addPage();
+  y = 20;
+  y = addHeader(doc, '7. Final Business Model Selection (Task 19)', y);
+
+  const rankedIdeas = [...finalShortlistRankings].sort((a, b) => (a.rank || 0) - (b.rank || 0));
+  const winnerFromRank = rankedIdeas.find(r => r.rank === 1);
+  const runnerUpFromRank = rankedIdeas.find(r => r.rank === 2);
+  const winnerName = winningBusinessModelName || (winnerFromRank ? getIdeaName(winnerFromRank.ideaId) : '—');
+  const runnerUpName = runnerUpFromRank ? getIdeaName(runnerUpFromRank.ideaId) : '—';
+
+  if (finalShortlistRankings.length > 0) {
+    y = addSubHeader(doc, 'Final Shortlist Rankings', y);
+    autoTable(doc, {
+      startY: y,
+      head: [['Rank', 'Idea Name', 'Risk Rating', 'Feasibility Rating', 'Rationale']],
+      body: rankedIdeas.map(r => [
+        String(r.rank || ''),
+        getIdeaName(r.ideaId),
+        r.riskRating || '—',
+        r.feasibilityRating || '—',
+        r.rationale || '—'
+      ]),
+      theme: 'grid',
+      headStyles: { fillColor: HEADER_BG, textColor: [ACCENT[0], ACCENT[1], ACCENT[2]], fontSize: 8 },
+      bodyStyles: { fontSize: 7, textColor: [60, 60, 60] },
+      alternateRowStyles: { fillColor: [245, 245, 245] },
+      margin: { left: 14, right: 14 },
+    });
+    y = (doc as unknown as {lastAutoTable: {finalY: number}}).lastAutoTable.finalY + 8;
+  }
+
+  y = checkPage(doc, y, 50);
+  y = addSubHeader(doc, 'Crowned Champion & Backup Plan', y);
+  y = addLabelValue(doc, 'Winning Business Model (Winner)', winnerName, y);
+  y = addLabelValue(doc, 'Runner-Up Business Model', runnerUpName, y);
+  y = addLabelValue(doc, 'Selection Rationale', championSelectionDetails.championRationale || '—', y);
+  y = addLabelValue(doc, 'Contingency Backup Plan', championSelectionDetails.contingencyPlan || '—', y);
+  y = addLabelValue(doc, 'Immediate Action Milestone', championSelectionDetails.immediateMilestone || '—', y);
+
+  // --- Task 20: Proof of Concept Scope ---
+  doc.addPage();
+  y = 20;
+  y = addHeader(doc, '8. Proof of Concept (PoC) Scope (Task 20)', y);
+
+  y = addSubHeader(doc, 'PoC Boundaries & Fast-to-Fail Rules', y);
+  y = addLabelValue(doc, 'Scope Details', pocScopeDetails || '—', y);
+  y = addLabelValue(doc, 'Fast-to-Fail Conditions', failConditions || '—', y);
+
+  if (feasibilityValidationMatrix.length > 0) {
+    y = checkPage(doc, y, 40);
+    y = addSubHeader(doc, 'Feasibility Validation Matrix', y);
+    autoTable(doc, {
+      startY: y,
+      head: [['Assumption', 'Type', 'Validation Method', 'Target Metric', 'Status']],
+      body: feasibilityValidationMatrix.map(f => [
+        f.assumption || '—',
+        f.type || '—',
+        f.method || '—',
+        f.targetMetric || '—',
+        f.status || '—'
+      ]),
+      theme: 'grid',
+      headStyles: { fillColor: HEADER_BG, textColor: [ACCENT[0], ACCENT[1], ACCENT[2]], fontSize: 8 },
+      bodyStyles: { fontSize: 7, textColor: [60, 60, 60] },
+      alternateRowStyles: { fillColor: [245, 245, 245] },
+      margin: { left: 14, right: 14 },
+    });
+    y = (doc as unknown as {lastAutoTable: {finalY: number}}).lastAutoTable.finalY + 8;
+  }
+
+  if (wireframeScreens.length > 0) {
+    y = checkPage(doc, y, 40);
+    y = addSubHeader(doc, 'PoC Mock Wireframe Screens', y);
+    autoTable(doc, {
+      startY: y,
+      head: [['Screen Title', 'Description', 'Mock Components']],
+      body: wireframeScreens.map(w => [
+        w.title || '—',
+        w.description || '—',
+        w.components || '—'
+      ]),
+      theme: 'grid',
+      headStyles: { fillColor: HEADER_BG, textColor: [ACCENT[0], ACCENT[1], ACCENT[2]], fontSize: 8 },
+      bodyStyles: { fontSize: 7, textColor: [60, 60, 60] },
+      alternateRowStyles: { fillColor: [245, 245, 245] },
+      margin: { left: 14, right: 14 },
+    });
+    y = (doc as unknown as {lastAutoTable: {finalY: number}}).lastAutoTable.finalY + 10;
+  }
+}
+
 // ═══════════════════════════════════════════
 // MAIN COMPONENT
 // ═══════════════════════════════════════════
@@ -694,9 +1320,10 @@ const PHASE_INFO: Record<number, { title: string; fileName: string; tasks: strin
   2: { title: 'Strategic Foundation & Roadmap', fileName: 'Phase_2_Strategic_Foundation_Roadmap', tasks: 'Tasks 5\u20137' },
   3: { title: 'Founder & Team Blueprint', fileName: 'Phase_3_Founder_Team_Blueprint', tasks: 'Tasks 8\u201310' },
   4: { title: 'Innovation Horizon & Idea Portfolio', fileName: 'Phase_4_Innovation_Horizon_Ideas', tasks: 'Tasks 11\u201313' },
+  5: { title: 'Business Model Determination Report', fileName: 'Phase_5_Business_Model_Determination', tasks: 'Tasks 14\u201320' },
 };
 
-export default function PhasePDFGenerator({ phase }: { phase: 1 | 2 | 3 | 4 }) {
+export default function PhasePDFGenerator({ phase }: { phase: 1 | 2 | 3 | 4 | 5 }) {
   const { getTaskInput } = useGarage();
   const [generated, setGenerated] = useState(false);
   const [generating, setGenerating] = useState(false);
@@ -717,6 +1344,7 @@ export default function PhasePDFGenerator({ phase }: { phase: 1 | 2 | 3 | 4 }) {
       case 2: generatePhase2(doc, getTaskInput); break;
       case 3: generatePhase3(doc, getTaskInput); break;
       case 4: generatePhase4(doc, getTaskInput); break;
+      case 5: generatePhase5(doc, getTaskInput); break;
     }
 
     addFooters(doc);

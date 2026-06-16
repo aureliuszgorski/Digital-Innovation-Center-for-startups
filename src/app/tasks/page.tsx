@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { TASKS, STAGES, SUB_STAGES, TYPE_COLORS, STAGE_COLORS } from '@/data/tasks';
 import { useGarage } from '@/context/GarageContext';
-import { Check, ChevronRight, ChevronDown, Star, Download } from 'lucide-react';
+import { Check, ChevronRight, ChevronDown, Star } from 'lucide-react';
 import PhasePDFGenerator from '@/components/PhasePDFGenerator';
 
 export default function TasksPage() {
@@ -12,11 +12,12 @@ export default function TasksPage() {
   const [search, setSearch] = useState('');
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
 
-  const PHASE_PDF_MAP: Record<string, 1|2|3|4> = {
+  const PHASE_PDF_MAP: Record<string, 1|2|3|4|5> = {
     'Start with Problems': 1,
     'Plan Mission': 2,
     'Assemble Core Team': 3,
     'Collect Ideas': 4,
+    'Determine Business Models': 5,
   };
 
   const stageTasks = activeStage === 'ALL' ? TASKS : TASKS.filter(t => t.stage === activeStage);

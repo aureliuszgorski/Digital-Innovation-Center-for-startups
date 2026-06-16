@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useGarage } from '@/context/GarageContext';
 import { ArrowRight, Layers, Star, AlertTriangle, Save, Info } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import PhasePDFGenerator from '@/components/PhasePDFGenerator';
 
 interface ValidationRow {
   assumption: string;
@@ -350,6 +351,7 @@ export default function Task20Redesign() {
               Complete Task 20 and finalize
               <ArrowRight size={14} />
             </button>
+            <PhasePDFGenerator phase={5} />
           </div>
         </div>
       </div>
