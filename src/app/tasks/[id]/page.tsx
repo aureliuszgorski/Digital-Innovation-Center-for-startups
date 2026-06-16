@@ -5,6 +5,10 @@ import { getTask, TYPE_COLORS, STAGE_COLORS } from '@/data/tasks';
 import { useGarage } from '@/context/GarageContext';
 import { Brain, BarChart3, Swords, Microscope, PenTool, ClipboardList, Code2, X, Send, Check, Star, ChevronLeft, ChevronRight, FileText, Sparkles } from 'lucide-react';
 import TaskInfographic from '@/components/TaskInfographic';
+import Task1Redesign from '@/components/Task1Redesign';
+import Task2Redesign from '@/components/Task2Redesign';
+import Task3Redesign from '@/components/Task3Redesign';
+import Task4Redesign from '@/components/Task4Redesign';
 
 const AI_ROLES = [
   { id: 'mentor', label: 'Mentor', icon: Brain, desc: 'Strategic coaching and guidance' },
@@ -163,6 +167,42 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
   }
 
   if (!task) return <div className="text-center py-20 text-white/40">Task not found</div>;
+
+  if (taskNum === 1) {
+    return (
+      <>
+        <Task1Redesign />
+        <AIMentorPanel taskNum={1} taskTitle={task.title} />
+      </>
+    );
+  }
+
+  if (taskNum === 2) {
+    return (
+      <>
+        <Task2Redesign />
+        <AIMentorPanel taskNum={2} taskTitle={task.title} />
+      </>
+    );
+  }
+
+  if (taskNum === 3) {
+    return (
+      <>
+        <Task3Redesign />
+        <AIMentorPanel taskNum={3} taskTitle={task.title} />
+      </>
+    );
+  }
+
+  if (taskNum === 4) {
+    return (
+      <>
+        <Task4Redesign />
+        <AIMentorPanel taskNum={4} taskTitle={task.title} />
+      </>
+    );
+  }
 
   const done = completedTasks.includes(taskNum);
   const prev = taskNum > 1 ? getTask(taskNum - 1) : null;
