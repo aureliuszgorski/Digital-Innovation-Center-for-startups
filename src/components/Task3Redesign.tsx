@@ -659,6 +659,7 @@ export default function Task3Redesign() {
           </div>
 
           <div className="pt-6 border-t border-white/[0.06] space-y-3">
+            {/* Side-by-Side Score Comparison */}
             <h4 className="text-xs font-semibold text-white/80">Side-by-Side Score Comparison</h4>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs border-collapse min-w-[600px]">

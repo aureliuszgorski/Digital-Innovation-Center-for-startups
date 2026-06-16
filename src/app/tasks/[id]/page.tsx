@@ -9,6 +9,12 @@ import Task1Redesign from '@/components/Task1Redesign';
 import Task2Redesign from '@/components/Task2Redesign';
 import Task3Redesign from '@/components/Task3Redesign';
 import Task4Redesign from '@/components/Task4Redesign';
+import Task5Redesign from '@/components/Task5Redesign';
+import Task6Redesign from '@/components/Task6Redesign';
+import Task7Redesign from '@/components/Task7Redesign';
+import Task8Redesign from '@/components/Task8Redesign';
+import Task9Redesign from '@/components/Task9Redesign';
+import Task10Redesign from '@/components/Task10Redesign';
 
 const AI_ROLES = [
   { id: 'mentor', label: 'Mentor', icon: Brain, desc: 'Strategic coaching and guidance' },
@@ -26,17 +32,69 @@ function AIMentorPanel({ taskNum, taskTitle }: { taskNum: number; taskTitle: str
   const [input, setInput] = useState('');
   const [open, setOpen] = useState(false);
 
-  const suggestions = [
-    `What should I focus on most in "${taskTitle}"?`,
-    `What are common mistakes founders make here?`,
-    `Can you give me a template to start with?`,
-    `How do I know when this task is truly done?`,
-  ];
+  const getSuggestions = () => {
+    if (taskNum === 5) {
+      return [
+        "How do I balance core business values with rapid execution requirements?",
+        "What are common pitfalls when drafting a startup's vision statement?",
+        "How can I define decision principles that actually prevent scope creep?",
+        "Can you suggest behavior vs anti-behavior pairs for a Customer Empathy value?"
+      ];
+    }
+    if (taskNum === 6) {
+      return [
+        "How do I know if a milestone belongs in Month 3 vs Month 6?",
+        "What are typical dependencies that delay the MVP Launch phase?",
+        "Can you suggest three Solution Validation steps from the 100-tasks framework?",
+        "How should I log open questions so they stay actionable?"
+      ];
+    }
+    if (taskNum === 7) {
+      return [
+        "What criteria should I use to distinguish Must-Haves from Should-Haves?",
+        "How do I determine realistic lead times for initial developer setup tasks?",
+        "What is the best feedback loop for the Solution Definition phase?",
+        "How often should I review and update this roadmap during early validation?"
+      ];
+    }
+    return [
+      `What should I focus on most in "${taskTitle}"?`,
+      `What are common mistakes founders make here?`,
+      `Can you give me a template to start with?`,
+      `How do I know when this task is truly done?`,
+    ];
+  };
+
+  const suggestions = getSuggestions();
 
   const sendMsg = (text: string) => {
     if (!text.trim()) return;
     const r = AI_ROLES.find(x => x.id === role)!;
-    setMessages(m => [...m, { role: 'user', text }, { role: 'ai', text: `[${r.label}] That's a great question about Task ${taskNum}. For "${taskTitle}", I would recommend focusing on the key deliverables and ensuring you have concrete outputs before moving on. This is a mock response -- connect a real AI API to get personalized guidance.` }]);
+    
+    let aiResponse = `[${r.label}] That's a great question about Task ${taskNum}. For "${taskTitle}", I would recommend focusing on the key deliverables and ensuring you have concrete outputs before moving on. This is a mock response -- connect a real AI API to get personalized guidance.`;
+    
+    const roleLower = role.toLowerCase();
+    if (taskNum === 5) {
+      if (roleLower === 'mentor') {
+        aiResponse = `[Mentor] In Task 5 (Founder North Star), values must constrain behavior. Make sure your values reject certain profitable but distracting opportunities. For instance, Empathy-First should ban building before speaking to users.`;
+      } else if (roleLower === 'pm') {
+        aiResponse = `[PM] As a Product Manager, I advise keeping your vision statement tightly anchored on the core pain. A world where users can achieve their desired outcome without the major pain is your guide for features.`;
+      }
+    } else if (taskNum === 6) {
+      if (roleLower === 'pm') {
+        aiResponse = `[PM] For Task 6 (Operational Backlog), focus on breaking down your milestones into steps of 2-5 days lead time. Use the 100-tasks framework suggestions to ensure you don't miss essential validation steps.`;
+      } else if (roleLower === 'cto') {
+        aiResponse = `[CTO] Keep technical dependencies minimal. Build your database and auth setups only when solution interest is proven. Concierge validation is your friend.`;
+      }
+    } else if (taskNum === 7) {
+      if (roleLower === 'analyst') {
+        aiResponse = `[Analyst] When prioritizing, limit your Must-Haves to the absolute critical path of validation. Should-Haves and Nice-To-Haves should wait until you have baseline conversion metrics.`;
+      } else if (roleLower === 'mentor') {
+        aiResponse = `[Mentor] Ensure your feedback loops are fast. If a feedback loop in the Problem Clarity phase takes a month, you are moving too slowly. Keep validation loops under a week.`;
+      }
+    }
+
+    setMessages(m => [...m, { role: 'user', text }, { role: 'ai', text: aiResponse }]);
     setInput('');
   };
 
@@ -200,6 +258,60 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
       <>
         <Task4Redesign />
         <AIMentorPanel taskNum={4} taskTitle={task.title} />
+      </>
+    );
+  }
+
+  if (taskNum === 5) {
+    return (
+      <>
+        <Task5Redesign />
+        <AIMentorPanel taskNum={5} taskTitle={task.title} />
+      </>
+    );
+  }
+
+  if (taskNum === 6) {
+    return (
+      <>
+        <Task6Redesign />
+        <AIMentorPanel taskNum={6} taskTitle={task.title} />
+      </>
+    );
+  }
+
+  if (taskNum === 7) {
+    return (
+      <>
+        <Task7Redesign />
+        <AIMentorPanel taskNum={7} taskTitle={task.title} />
+      </>
+    );
+  }
+
+  if (taskNum === 8) {
+    return (
+      <>
+        <Task8Redesign />
+        <AIMentorPanel taskNum={8} taskTitle={task.title} />
+      </>
+    );
+  }
+
+  if (taskNum === 9) {
+    return (
+      <>
+        <Task9Redesign />
+        <AIMentorPanel taskNum={9} taskTitle={task.title} />
+      </>
+    );
+  }
+
+  if (taskNum === 10) {
+    return (
+      <>
+        <Task10Redesign />
+        <AIMentorPanel taskNum={10} taskTitle={task.title} />
       </>
     );
   }
