@@ -79,7 +79,7 @@ function addFooters(doc: jsPDF) {
     doc.setFontSize(8);
     doc.setTextColor(150, 150, 150);
     doc.text(
-      `Digital Innovation Center for Startups — Page ${i} of ${pageCount}`,
+      `INNOVATION CENTER at BusinessHUB / District.org — Page ${i} of ${pageCount}`,
       doc.internal.pageSize.getWidth() / 2,
       doc.internal.pageSize.getHeight() - 10,
       { align: 'center' }
@@ -100,7 +100,7 @@ function createTitlePage(doc: jsPDF, phaseTitle: string, phaseSub: string) {
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(12);
   doc.setFont('helvetica', 'normal');
-  doc.text('Digital Innovation Center for Startups', 14, 50);
+  doc.text('INNOVATION CENTER at BusinessHUB / District.org', 14, 50);
 
   // Title
   doc.setTextColor(ACCENT[0], ACCENT[1], ACCENT[2]);

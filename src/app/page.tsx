@@ -248,7 +248,7 @@ export default function Dashboard() {
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10" />
         <img 
           src="/garage.jpg" 
-          alt="Digital Innovation Center Workspace" 
+          alt="Innovation Center Workspace" 
           className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-1000 ease-out group-hover:scale-[1.02]"
         />
         {/* Ambient glow decoration */}
@@ -262,7 +262,7 @@ export default function Dashboard() {
               INNOVATION CENTER
             </div>
             <h1 className="text-2xl md:text-4xl font-black text-white tracking-tight leading-none">
-              Digital Innovation Center <span style={{ color: '#B4F052' }}>for Startups @ District.org</span>
+              INNOVATION CENTER <span style={{ color: '#B4F052' }}>at BusinessHUB / District.org</span>
             </h1>
             <p className="text-xs md:text-sm text-white/70 max-w-xl mt-1">
               Your operational command center. Keep building, testing, and scaling towards your first unicorn.

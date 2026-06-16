@@ -279,7 +279,7 @@ export default function PitchToInvestorsPage() {
                 <div className="space-y-3 animate-fade-in">
                   <span className="text-[9px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded">Solution</span>
                   <h4 className="text-lg font-bold text-white leading-snug pt-1">
-                    The Digital Innovation Center Operational Cockpit
+                    The Innovation Center Operational Cockpit
                   </h4>
                   <p className="text-xs text-white/50 leading-relaxed">
                     A data-driven playbook built on 100 structured tasks, unified with specialized AI co-founders, sandbox metrics engines, and structured pilot scoping algorithms to validate and deploy code at scale.

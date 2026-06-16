@@ -318,7 +318,7 @@ export default function Task9Redesign() {
 
 I saw your portfolio of building lightweight tools and loved your project on [X].
 
-I’m building Digital Innovation Center for Startups, solving the operational checklist overload for early founders. I'm looking for a partner with strong technical builder capabilities who aligns with our core mission of democratizing startup setups.
+I’m building a project at the Innovation Center at BusinessHUB / District.org, solving the operational checklist overload for early founders. I'm looking for a partner with strong technical builder capabilities who aligns with our core mission of democratizing startup setups.
 
 Would you be open to a 15-minute virtual coffee to share feedback or explore a sandbox collaboration?
 

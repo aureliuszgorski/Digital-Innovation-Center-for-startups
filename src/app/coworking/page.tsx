@@ -723,7 +723,7 @@ export default function CoworkingPage() {
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#B4F052] bg-[#B4F052]/10 px-2.5 py-1 rounded-full">
               Digital Coworking Space
             </span>
-            <h1 className="text-3xl font-extrabold text-white tracking-tight">Welcome to the Digital Innovation Center</h1>
+            <h1 className="text-3xl font-extrabold text-white tracking-tight">Welcome to the Innovation Center</h1>
             <p className="text-sm text-white/80 leading-relaxed max-w-3xl">
               A digital coworking space for solo founders and AI-native builders. Meet the people, and ask the right person for help with the challenge you are facing now.
             </p>
@@ -926,7 +926,7 @@ export default function CoworkingPage() {
         </div>
         
         <div className="p-3 bg-white/[0.02] border border-white/[0.04] rounded-xl text-[10px] text-white/30">
-          Working next to professionals at Digital Innovation Center.
+          Working next to professionals at the Innovation Center.
         </div>
       </div>
 

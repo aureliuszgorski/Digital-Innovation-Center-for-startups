@@ -10,10 +10,7 @@ export default function TopBar() {
   const LevelIcon = level.icon;
 
   return (
-    <header className="fixed top-0 left-56 right-0 h-16 glass-card rounded-none border-t-0 border-r-0 z-40 flex items-center justify-between px-6">
-      <div className="flex items-center gap-4">
-        <h2 className="text-sm font-semibold text-white/80">{startupName}</h2>
-      </div>
+    <header className="fixed top-0 left-56 right-0 h-16 glass-card rounded-none border-t-0 border-r-0 z-40 flex items-center justify-end px-6">
       <div className="flex items-center gap-5">
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.05] border border-white/[0.08]">
           <LevelIcon size={14} style={{ color: level.color }} />

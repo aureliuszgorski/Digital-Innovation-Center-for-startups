@@ -6,7 +6,7 @@ import ClientShell from "@/components/ClientShell";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Digital Innovation Center for Startups @ District.org",
+  title: "INNOVATION CENTER at BusinessHUB / District.org",
   description: "Your operational cockpit for building a startup - 100 tasks from idea to unicorn.",
 };
 

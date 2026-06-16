@@ -58,7 +58,7 @@ ${solutionScope}
   - Cumulative Pilot Operational ROI: $${totalPilotSavings} USD
 
 ---
-Generated in Digital Innovation Center for Startups @ District.org Pilot Cockpit.`;
+Generated in Innovation Center at BusinessHUB / District.org Pilot Cockpit.`;
 
     navigator.clipboard.writeText(markdownContent);
     setCopied(true);

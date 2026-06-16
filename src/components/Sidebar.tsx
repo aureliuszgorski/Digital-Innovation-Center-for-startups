@@ -2,13 +2,13 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
-  LayoutDashboard, ListChecks, CalendarDays, Trophy, Crown, 
-  Users, Globe, Brain, Presentation, Briefcase, Layers 
+  LayoutDashboard, ListChecks, CalendarDays, Trophy, 
+  Users, Globe, Brain, Presentation, Briefcase, Layers, GraduationCap 
 } from 'lucide-react';
 
 const GROUPS = [
   {
-    title: 'Digital Innovation Center',
+    title: 'Your Startup',
     items: [
       { href: '/', label: 'Dashboard', icon: LayoutDashboard },
       { href: '/ai-skills', label: 'AI Skills', icon: Brain },
@@ -18,13 +18,19 @@ const GROUPS = [
     ]
   },
   {
-    title: 'Innovation Center',
+    title: 'Opportunities',
     items: [
+      { href: '/resources', label: 'Resources', icon: Layers },
       { href: '/challenges', label: 'Challenges', icon: Globe },
       { href: '/coworking', label: 'Coworking', icon: Users },
-      { href: '/resources', label: 'Resources', icon: Layers },
       { href: '/pitch-to-pilot-program', label: 'Pitch to pilot program', icon: Presentation },
       { href: '/pitch-to-investors', label: 'Pitch to investors', icon: Briefcase },
+    ]
+  },
+  {
+    title: 'Marketplace',
+    items: [
+      { href: '/mentors', label: 'Mentors', icon: GraduationCap }
     ]
   }
 ];
@@ -35,14 +41,9 @@ export default function Sidebar() {
   return (
     <aside className="fixed left-0 top-0 bottom-0 w-56 flex flex-col glass-card rounded-none border-l-0 border-t-0 border-b-0 z-50">
       <div className="p-5 border-b border-white/[0.08]">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center text-black" style={{ background: '#B4F052' }}>
-            <Crown size={18} strokeWidth={2.5} />
-          </div>
-          <div>
-            <div className="text-[11px] font-bold leading-tight" style={{ color: '#B4F052' }}>Digital Innovation Center</div>
-            <div className="text-[9px] text-white/40 leading-none mt-0.5">for Startups @ District.org</div>
-          </div>
+        <Link href="/" className="flex flex-col gap-0.5">
+          <div className="text-[12px] font-black tracking-wider leading-tight text-white uppercase">INNOVATION CENTER</div>
+          <div className="text-[9px] font-bold leading-none mt-0.5" style={{ color: '#B4F052' }}>at BusinessHUB / District.org</div>
         </Link>
       </div>
       

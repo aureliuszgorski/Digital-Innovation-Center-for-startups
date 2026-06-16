@@ -18,6 +18,14 @@ import Task10Redesign from '@/components/Task10Redesign';
 import Task11Redesign from '@/components/Task11Redesign';
 import Task12Redesign from '@/components/Task12Redesign';
 import Task13Redesign from '@/components/Task13Redesign';
+import Task14Redesign from '@/components/Task14Redesign';
+import Task15Redesign from '@/components/Task15Redesign';
+import Task16Redesign from '@/components/Task16Redesign';
+import Task17Redesign from '@/components/Task17Redesign';
+import Task18Redesign from '@/components/Task18Redesign';
+import Task19Redesign from '@/components/Task19Redesign';
+import Task20Redesign from '@/components/Task20Redesign';
+
 
 const AI_ROLES = [
   { id: 'mentor', label: 'Mentor', icon: Brain, desc: 'Strategic coaching and guidance' },
@@ -345,6 +353,70 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
       </>
     );
   }
+
+  if (taskNum === 14) {
+    return (
+      <>
+        <Task14Redesign />
+        <AIMentorPanel taskNum={14} taskTitle={task.title} />
+      </>
+    );
+  }
+
+  if (taskNum === 15) {
+    return (
+      <>
+        <Task15Redesign />
+        <AIMentorPanel taskNum={15} taskTitle={task.title} />
+      </>
+    );
+  }
+
+  if (taskNum === 16) {
+    return (
+      <>
+        <Task16Redesign />
+        <AIMentorPanel taskNum={16} taskTitle={task.title} />
+      </>
+    );
+  }
+
+  if (taskNum === 17) {
+    return (
+      <>
+        <Task17Redesign />
+        <AIMentorPanel taskNum={17} taskTitle={task.title} />
+      </>
+    );
+  }
+
+  if (taskNum === 18) {
+    return (
+      <>
+        <Task18Redesign />
+        <AIMentorPanel taskNum={18} taskTitle={task.title} />
+      </>
+    );
+  }
+
+  if (taskNum === 19) {
+    return (
+      <>
+        <Task19Redesign />
+        <AIMentorPanel taskNum={19} taskTitle={task.title} />
+      </>
+    );
+  }
+
+  if (taskNum === 20) {
+    return (
+      <>
+        <Task20Redesign />
+        <AIMentorPanel taskNum={20} taskTitle={task.title} />
+      </>
+    );
+  }
+
 
   const done = completedTasks.includes(taskNum);
   const prev = taskNum > 1 ? getTask(taskNum - 1) : null;

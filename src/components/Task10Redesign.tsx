@@ -188,7 +188,7 @@ I hope this message finds you well.
 
 I’ve been following your startup achievements, specifically your work on scaling enterprise B2B sales.
 
-I’m the founder of Digital Innovation Center for Startups, and we are working on a critical decision around validation and early pricing models for tech incubators. Given your experience exit, your advice would be invaluable to help us avoid early pitfalls.
+I’m a founder at the Innovation Center at BusinessHUB / District.org, and we are working on a critical decision around validation and early pricing models for tech incubators. Given your experience exit, your advice would be invaluable to help us avoid early pitfalls.
 
 Would you be open to a brief, 15-minute chat next week to share your thoughts on early sales feedback loops?
 
