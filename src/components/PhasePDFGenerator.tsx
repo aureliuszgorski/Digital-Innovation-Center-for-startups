@@ -1313,6 +1313,261 @@ function generatePhase5(doc: jsPDF, getTaskInput: (t: number, f: string) => stri
 }
 
 // ═══════════════════════════════════════════
+// HELPER: Generic task section (notes + deliverable)
+// ═══════════════════════════════════════════
+function addGenericTaskSection(doc: jsPDF, getTaskInput: (t: number, f: string) => string, taskNum: number, sectionNum: number, title: string, y: number): number {
+  y = checkPage(doc, y, 40);
+  y = addHeader(doc, `${sectionNum}. Task ${taskNum}: ${title}`, y);
+  const notes = getTaskInput(taskNum, 'notes');
+  const deliverable = getTaskInput(taskNum, 'deliverable');
+  if (notes) {
+    y = addSubHeader(doc, 'Notes & Key Insights', y);
+    y = addText(doc, notes, y);
+  }
+  if (deliverable) {
+    y = addLabelValue(doc, 'Key Deliverable', deliverable, y);
+  }
+  if (!notes && !deliverable) {
+    y = addText(doc, 'Not yet completed.', y, { italic: true });
+  }
+  return y;
+}
+
+// ═══════════════════════════════════════════
+// PHASE 6: Make Starter-Kits (Tasks 21-25)
+// ═══════════════════════════════════════════
+function generatePhase6(doc: jsPDF, getTaskInput: (t: number, f: string) => string) {
+  createTitlePage(doc, 'Starter-Kits Portfolio & Assets', 'Phase 6 Summary — Tasks 21 through 25');
+  let y = 20;
+  y = addGenericTaskSection(doc, getTaskInput, 21, 1, 'Define Your USPs', y);
+  y = addGenericTaskSection(doc, getTaskInput, 22, 2, 'Assemble Focus Group & Follow Lean Start-up Loop', y);
+  y = addGenericTaskSection(doc, getTaskInput, 23, 3, 'ESGs', y);
+  y = addGenericTaskSection(doc, getTaskInput, 24, 4, 'Build Financial Model', y);
+  y = addGenericTaskSection(doc, getTaskInput, 25, 5, 'Create Pitch Deck', y);
+}
+
+// ═══════════════════════════════════════════
+// PHASE 7: Develop MVP (Tasks 26-31)
+// ═══════════════════════════════════════════
+function generatePhase7(doc: jsPDF, getTaskInput: (t: number, f: string) => string) {
+  createTitlePage(doc, 'MVP Technical Specification & Backlog', 'Phase 7 Summary — Tasks 26 through 31');
+  let y = 20;
+
+  // Task 26 has special fields
+  y = addHeader(doc, '1. Task 26: Specify MVP', y);
+  const productName = getTaskInput(26, 'productName');
+  const features = getTaskInput(26, 'features');
+  const targetUser = getTaskInput(26, 'targetUser');
+  const keyMetric = getTaskInput(26, 'keyMetric');
+  const t26notes = getTaskInput(26, 'notes');
+  if (productName) y = addLabelValue(doc, 'Product Name', productName, y);
+  if (features) { y = addSubHeader(doc, 'Core Features', y); y = addText(doc, features, y); }
+  if (targetUser) y = addLabelValue(doc, 'Target User', targetUser, y);
+  if (keyMetric) y = addLabelValue(doc, 'Key Metric', keyMetric, y);
+  if (t26notes) { y = addSubHeader(doc, 'Notes', y); y = addText(doc, t26notes, y); }
+  if (!productName && !features && !t26notes) y = addText(doc, 'Not yet completed.', y, { italic: true });
+
+  y = addGenericTaskSection(doc, getTaskInput, 27, 2, 'Determine Tool Stack', y);
+  y = addGenericTaskSection(doc, getTaskInput, 28, 3, 'Set Up Lean PMO', y);
+  y = addGenericTaskSection(doc, getTaskInput, 29, 4, 'Perform Legal Check of Business Model & Key Documents', y);
+  y = addGenericTaskSection(doc, getTaskInput, 30, 5, 'Calculate Costs for MVP Development', y);
+  y = addGenericTaskSection(doc, getTaskInput, 31, 6, 'Develop MVP', y);
+}
+
+// ═══════════════════════════════════════════
+// PHASE 8: Define Brand (Tasks 32-35)
+// ═══════════════════════════════════════════
+function generatePhase8(doc: jsPDF, getTaskInput: (t: number, f: string) => string) {
+  createTitlePage(doc, 'Brand Identity & Style System', 'Phase 8 Summary — Tasks 32 through 35');
+  let y = 20;
+  y = addGenericTaskSection(doc, getTaskInput, 32, 1, 'Define Your Brand', y);
+  y = addGenericTaskSection(doc, getTaskInput, 33, 2, 'Establish an Online Footprint', y);
+  y = addGenericTaskSection(doc, getTaskInput, 34, 3, 'Create Design & Wireframes', y);
+  y = addGenericTaskSection(doc, getTaskInput, 35, 4, 'Finish Logo and Creatives', y);
+}
+
+// ═══════════════════════════════════════════
+// PHASE 9: Raise (Pre-)Seed Capital (Tasks 36-42)
+// ═══════════════════════════════════════════
+function generatePhase9(doc: jsPDF, getTaskInput: (t: number, f: string) => string) {
+  createTitlePage(doc, 'Seed Funding Strategy & Pipeline', 'Phase 9 Summary — Tasks 36 through 42');
+  let y = 20;
+  y = addGenericTaskSection(doc, getTaskInput, 36, 1, 'Consider Various Funding Options', y);
+  y = addGenericTaskSection(doc, getTaskInput, 37, 2, 'Calculate Required Funding Amount and Valuation', y);
+  y = addGenericTaskSection(doc, getTaskInput, 38, 3, 'Determine Non-financial Investor Requirements', y);
+  y = addGenericTaskSection(doc, getTaskInput, 39, 4, 'Identify Relevant Investor Types', y);
+  y = addGenericTaskSection(doc, getTaskInput, 40, 5, 'Prepare and Pitch to Potential Investors', y);
+  y = addGenericTaskSection(doc, getTaskInput, 41, 6, 'Evaluate Potentially Interested Investors', y);
+  y = addGenericTaskSection(doc, getTaskInput, 42, 7, 'Secure (Pre-)Seed Investment', y);
+}
+
+// ═══════════════════════════════════════════
+// PHASE 10: Build Functions (Tasks 43-60)
+// ═══════════════════════════════════════════
+function generatePhase10(doc: jsPDF, getTaskInput: (t: number, f: string) => string) {
+  createTitlePage(doc, 'Corporate Infrastructure Report', 'Phase 10 Summary — Tasks 43 through 60');
+  let y = 20;
+  const phase10Tasks: [number, string][] = [
+    [43, 'Define Target Organizational Chart'],
+    [44, 'Gather Requirements for Each Function'],
+    [45, 'Design Operating Model'],
+    [46, 'Incorporate Legal Entity'],
+    [47, 'Set Up Bank Accounts'],
+    [48, 'Set Up Accounting'],
+    [49, 'Define Central and Local Logistics Value Streams'],
+    [50, 'Select Payment Service Provider'],
+    [51, 'Register Trademark'],
+    [52, 'Perform Capacity-Planning for Facility'],
+    [53, 'Set Up Content Production'],
+    [54, 'Build Supply Chain'],
+    [55, 'Organize Distribution'],
+    [56, 'Institute Sales Funnel'],
+    [57, 'Prepare Cross-Channel Marketing & Sales Strategy'],
+    [58, 'Ramp Up Facility'],
+    [59, 'Set Up Customer Care'],
+    [60, 'Prepare Tech Infrastructure and Security'],
+  ];
+  phase10Tasks.forEach(([num, title], idx) => {
+    y = addGenericTaskSection(doc, getTaskInput, num, idx + 1, title, y);
+  });
+}
+
+// ═══════════════════════════════════════════
+// PHASE 11: Set Up KPI Reports (Tasks 61-64)
+// ═══════════════════════════════════════════
+function generatePhase11(doc: jsPDF, getTaskInput: (t: number, f: string) => string) {
+  createTitlePage(doc, 'KPI Reporting & Cadence Plan', 'Phase 11 Summary — Tasks 61 through 64');
+  let y = 20;
+
+  // Task 61 has special KPI fields
+  y = addHeader(doc, '1. Task 61: Define Top 20 KPIs', y);
+  const kpiRows: string[][] = [];
+  for (let i = 0; i < 5; i++) {
+    const name = getTaskInput(61, `kpi-${i}-name`);
+    const target = getTaskInput(61, `kpi-${i}-target`);
+    const current = getTaskInput(61, `kpi-${i}-current`);
+    if (name) kpiRows.push([name, target || '—', current || '—']);
+  }
+  if (kpiRows.length > 0) {
+    autoTable(doc, {
+      startY: y,
+      head: [['KPI Name', 'Target', 'Current']],
+      body: kpiRows,
+      theme: 'grid',
+      headStyles: { fillColor: HEADER_BG, textColor: [ACCENT[0], ACCENT[1], ACCENT[2]], fontSize: 8 },
+      bodyStyles: { fontSize: 7, textColor: [60, 60, 60] },
+      alternateRowStyles: { fillColor: [245, 245, 245] },
+      margin: { left: 14, right: 14 },
+    });
+    y = (doc as unknown as {lastAutoTable: {finalY: number}}).lastAutoTable.finalY + 10;
+  }
+  const t61notes = getTaskInput(61, 'notes');
+  if (t61notes) { y = addSubHeader(doc, 'Notes', y); y = addText(doc, t61notes, y); }
+  if (kpiRows.length === 0 && !t61notes) y = addText(doc, 'Not yet completed.', y, { italic: true });
+
+  y = addGenericTaskSection(doc, getTaskInput, 62, 2, 'Set Up Data Warehouse', y);
+  y = addGenericTaskSection(doc, getTaskInput, 63, 3, 'Prepare Daily, Weekly, and Monthly Reports', y);
+  y = addGenericTaskSection(doc, getTaskInput, 64, 4, 'Set Hiring Targets', y);
+}
+
+// ═══════════════════════════════════════════
+// PHASE 12: Go Live (Tasks 65-69)
+// ═══════════════════════════════════════════
+function generatePhase12(doc: jsPDF, getTaskInput: (t: number, f: string) => string) {
+  createTitlePage(doc, 'Go Live Launch & Onboarding Report', 'Phase 12 Summary — Tasks 65 through 69');
+  let y = 20;
+  y = addGenericTaskSection(doc, getTaskInput, 65, 1, 'Stress Test & Bug-Fix Across Functions', y);
+  y = addGenericTaskSection(doc, getTaskInput, 66, 2, 'Prepare Press List', y);
+  y = addGenericTaskSection(doc, getTaskInput, 67, 3, 'Start KPI Reporting', y);
+  y = addGenericTaskSection(doc, getTaskInput, 68, 4, 'Conduct Launch PR Campaign & Paid Marketing', y);
+  y = addGenericTaskSection(doc, getTaskInput, 69, 5, 'Continue Testing & Bug-Fixing', y);
+}
+
+// ═══════════════════════════════════════════
+// PHASE 13: Raise Growth Capital (Tasks 70-71)
+// ═══════════════════════════════════════════
+function generatePhase13(doc: jsPDF, getTaskInput: (t: number, f: string) => string) {
+  createTitlePage(doc, 'Growth Capital & Cap Table Plan', 'Phase 13 Summary — Tasks 70 through 71');
+  let y = 20;
+  y = addGenericTaskSection(doc, getTaskInput, 70, 1, 'Secure Growth Investment', y);
+  y = addGenericTaskSection(doc, getTaskInput, 71, 2, 'Set Up Employee Participation Program', y);
+}
+
+// ═══════════════════════════════════════════
+// PHASE 14: Build Culture (Tasks 72-74)
+// ═══════════════════════════════════════════
+function generatePhase14(doc: jsPDF, getTaskInput: (t: number, f: string) => string) {
+  createTitlePage(doc, 'Company Culture & Employee Handbook', 'Phase 14 Summary — Tasks 72 through 74');
+  let y = 20;
+  y = addGenericTaskSection(doc, getTaskInput, 72, 1, 'Design and Track Hiring Process', y);
+  y = addGenericTaskSection(doc, getTaskInput, 73, 2, 'Foster People Development', y);
+  y = addGenericTaskSection(doc, getTaskInput, 74, 3, 'Create and Maintain Company Culture', y);
+}
+
+// ═══════════════════════════════════════════
+// PHASE 15: Learn from Data (Tasks 75-81)
+// ═══════════════════════════════════════════
+function generatePhase15(doc: jsPDF, getTaskInput: (t: number, f: string) => string) {
+  createTitlePage(doc, 'Data Analytics & Retention Funnel', 'Phase 15 Summary — Tasks 75 through 81');
+  let y = 20;
+  y = addGenericTaskSection(doc, getTaskInput, 75, 1, 'Navigate Using Daily, Weekly, & Monthly Reports', y);
+  y = addGenericTaskSection(doc, getTaskInput, 76, 2, 'Dig Deeper Using Ad Hoc Reports for Each Function', y);
+  y = addGenericTaskSection(doc, getTaskInput, 77, 3, 'Analyze Progress Toward Financial Targets', y);
+  y = addGenericTaskSection(doc, getTaskInput, 78, 4, 'Focus on Cross-Channel Marketing Mix that Works', y);
+  y = addGenericTaskSection(doc, getTaskInput, 79, 5, 'Analyze Customer Engagement with Product', y);
+  y = addGenericTaskSection(doc, getTaskInput, 80, 6, 'Re-design Operating Model According to Data', y);
+  y = addGenericTaskSection(doc, getTaskInput, 81, 7, 'Establish Proper Financial Reporting, Controlling, & Compliance', y);
+}
+
+// ═══════════════════════════════════════════
+// PHASE 16: Optimize Functions (Tasks 82-94)
+// ═══════════════════════════════════════════
+function generatePhase16(doc: jsPDF, getTaskInput: (t: number, f: string) => string) {
+  createTitlePage(doc, 'Scale Optimization & Automation Plan', 'Phase 16 Summary — Tasks 82 through 94');
+  let y = 20;
+  const phase16Tasks: [number, string][] = [
+    [82, 'Groom & Prioritize Product Roadmap'],
+    [83, 'Enhance UI/UX According to Usability Tests'],
+    [84, 'Boost Tech Stack'],
+    [85, 'Eliminate Operational Bottlenecks'],
+    [86, 'Re-assess Suppliers & Partners'],
+    [87, 'Optimize Payment Mix, Fees, Checkout Funnel & Fraud Prevention'],
+    [88, 'Improve Management of Sales Funnel'],
+    [89, 'Optimize CAC vs CLV'],
+    [90, 'Enhance CRM'],
+    [91, 'Build Brand & Execute PR Strategy'],
+    [92, 'Improve Customer Care Processes to Maximize NPS'],
+    [93, 'Automate Important Manual Processes'],
+    [94, 'Accelerate Workforce'],
+  ];
+  phase16Tasks.forEach(([num, title], idx) => {
+    y = addGenericTaskSection(doc, getTaskInput, num, idx + 1, title, y);
+  });
+}
+
+// ═══════════════════════════════════════════
+// PHASE 17: Best Practices (Tasks 95-96)
+// ═══════════════════════════════════════════
+function generatePhase17(doc: jsPDF, getTaskInput: (t: number, f: string) => string) {
+  createTitlePage(doc, 'OKR Goal Settings & SOP Handbook', 'Phase 17 Summary — Tasks 95 through 96');
+  let y = 20;
+  y = addGenericTaskSection(doc, getTaskInput, 95, 1, 'Phase in OKR System', y);
+  y = addGenericTaskSection(doc, getTaskInput, 96, 2, 'Define Best Practices for Each Function', y);
+}
+
+// ═══════════════════════════════════════════
+// PHASE 18: Independence (Tasks 97-100)
+// ═══════════════════════════════════════════
+function generatePhase18(doc: jsPDF, getTaskInput: (t: number, f: string) => string) {
+  createTitlePage(doc, 'PMF Audit & Succession Roadmap', 'Phase 18 Summary — Tasks 97 through 100');
+  let y = 20;
+  y = addGenericTaskSection(doc, getTaskInput, 97, 1, 'Implement Best Practices', y);
+  y = addGenericTaskSection(doc, getTaskInput, 98, 2, 'Implement Ongoing Knowledge Sharing', y);
+  y = addGenericTaskSection(doc, getTaskInput, 99, 3, 'Achieve Product-Market Fit', y);
+  y = addGenericTaskSection(doc, getTaskInput, 100, 4, 'Constantly Evaluate Further Growth & Expansion Options', y);
+}
+
+// ═══════════════════════════════════════════
 // MAIN COMPONENT
 // ═══════════════════════════════════════════
 const PHASE_INFO: Record<number, { title: string; fileName: string; tasks: string }> = {
@@ -1321,9 +1576,22 @@ const PHASE_INFO: Record<number, { title: string; fileName: string; tasks: strin
   3: { title: 'Founder & Team Blueprint', fileName: 'Phase_3_Founder_Team_Blueprint', tasks: 'Tasks 8\u201310' },
   4: { title: 'Innovation Horizon & Idea Portfolio', fileName: 'Phase_4_Innovation_Horizon_Ideas', tasks: 'Tasks 11\u201313' },
   5: { title: 'Business Model Determination Report', fileName: 'Phase_5_Business_Model_Determination', tasks: 'Tasks 14\u201320' },
+  6: { title: 'Starter-Kits Portfolio & Assets', fileName: 'Phase_6_Starter_Kits_Portfolio', tasks: 'Tasks 21\u201325' },
+  7: { title: 'MVP Technical Specification & Backlog', fileName: 'Phase_7_MVP_Technical_Specification', tasks: 'Tasks 26\u201331' },
+  8: { title: 'Brand Identity & Style System', fileName: 'Phase_8_Brand_Identity_System', tasks: 'Tasks 32\u201335' },
+  9: { title: 'Seed Funding Strategy & Pipeline', fileName: 'Phase_9_Seed_Funding_Strategy', tasks: 'Tasks 36\u201342' },
+  10: { title: 'Corporate Infrastructure Report', fileName: 'Phase_10_Corporate_Infrastructure', tasks: 'Tasks 43\u201360' },
+  11: { title: 'KPI Reporting & Cadence Plan', fileName: 'Phase_11_KPI_Reporting_Plan', tasks: 'Tasks 61\u201364' },
+  12: { title: 'Go Live Launch & Onboarding Report', fileName: 'Phase_12_Go_Live_Launch_Report', tasks: 'Tasks 65\u201369' },
+  13: { title: 'Growth Capital & Cap Table Plan', fileName: 'Phase_13_Growth_Capital_Plan', tasks: 'Tasks 70\u201371' },
+  14: { title: 'Company Culture & Employee Handbook', fileName: 'Phase_14_Company_Culture_Blueprint', tasks: 'Tasks 72\u201374' },
+  15: { title: 'Data Analytics & Retention Funnel', fileName: 'Phase_15_Data_Analytics_Funnel', tasks: 'Tasks 75\u201381' },
+  16: { title: 'Scale Optimization & Automation Plan', fileName: 'Phase_16_Scale_Optimization_Plan', tasks: 'Tasks 82\u201394' },
+  17: { title: 'OKR Goal Settings & SOP Handbook', fileName: 'Phase_17_OKR_SOP_Handbook', tasks: 'Tasks 95\u201396' },
+  18: { title: 'PMF Audit & succession Roadmap', fileName: 'Phase_18_PMF_Succession_Roadmap', tasks: 'Tasks 97\u2013100' },
 };
 
-export default function PhasePDFGenerator({ phase }: { phase: 1 | 2 | 3 | 4 | 5 }) {
+export default function PhasePDFGenerator({ phase }: { phase: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 }) {
   const { getTaskInput } = useGarage();
   const [generated, setGenerated] = useState(false);
   const [generating, setGenerating] = useState(false);
@@ -1345,6 +1613,19 @@ export default function PhasePDFGenerator({ phase }: { phase: 1 | 2 | 3 | 4 | 5 
       case 3: generatePhase3(doc, getTaskInput); break;
       case 4: generatePhase4(doc, getTaskInput); break;
       case 5: generatePhase5(doc, getTaskInput); break;
+      case 6: generatePhase6(doc, getTaskInput); break;
+      case 7: generatePhase7(doc, getTaskInput); break;
+      case 8: generatePhase8(doc, getTaskInput); break;
+      case 9: generatePhase9(doc, getTaskInput); break;
+      case 10: generatePhase10(doc, getTaskInput); break;
+      case 11: generatePhase11(doc, getTaskInput); break;
+      case 12: generatePhase12(doc, getTaskInput); break;
+      case 13: generatePhase13(doc, getTaskInput); break;
+      case 14: generatePhase14(doc, getTaskInput); break;
+      case 15: generatePhase15(doc, getTaskInput); break;
+      case 16: generatePhase16(doc, getTaskInput); break;
+      case 17: generatePhase17(doc, getTaskInput); break;
+      case 18: generatePhase18(doc, getTaskInput); break;
     }
 
     addFooters(doc);
@@ -1405,6 +1686,135 @@ export default function PhasePDFGenerator({ phase }: { phase: 1 | 2 | 3 | 4 | 5 
         }}>
           <CheckCircle size={16} />
           PDF Generated Successfully!
+        </span>
+      )}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════
+// ALL PHASES: Master PDF (Tasks 1-100)
+// ═══════════════════════════════════════════
+const ALL_GENERATORS = [
+  generatePhase1, generatePhase2, generatePhase3, generatePhase4, generatePhase5,
+  generatePhase6, generatePhase7, generatePhase8, generatePhase9, generatePhase10,
+  generatePhase11, generatePhase12, generatePhase13, generatePhase14, generatePhase15,
+  generatePhase16, generatePhase17, generatePhase18,
+];
+
+export function AllPhasesPDFGenerator() {
+  const { getTaskInput } = useGarage();
+  const [generated, setGenerated] = useState(false);
+  const [generating, setGenerating] = useState(false);
+
+  const generateAllPDF = async () => {
+    setGenerating(true);
+    setGenerated(false);
+    await new Promise(r => setTimeout(r, 50));
+
+    const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+
+    // Master title page
+    doc.setFillColor(DARK[0], DARK[1], DARK[2]);
+    doc.rect(0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'normal');
+    doc.text('INNOVATION CENTER at BusinessHUB / District.org', 14, 50);
+    doc.setTextColor(ACCENT[0], ACCENT[1], ACCENT[2]);
+    doc.setFontSize(28);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Complete Startup', 14, 80);
+    doc.text('Journey Report', 14, 95);
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'normal');
+    doc.text('All 100 Tasks — Phases 1 through 18', 14, 120);
+    doc.setFontSize(11);
+    doc.setTextColor(180, 180, 180);
+    doc.text(`Generated: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`, 14, 140);
+
+    // Table of contents
+    doc.addPage();
+    doc.setFillColor(255, 255, 255);
+    doc.rect(0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'F');
+    let y = 20;
+    doc.setTextColor(ACCENT[0], ACCENT[1], ACCENT[2]);
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Table of Contents', 14, y);
+    y += 12;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(60, 60, 60);
+    Object.entries(PHASE_INFO).forEach(([num, info]) => {
+      doc.text(`Phase ${num}: ${info.title} (${info.tasks})`, 14, y);
+      y += 7;
+    });
+
+    // Generate each phase
+    for (const gen of ALL_GENERATORS) {
+      gen(doc, getTaskInput);
+    }
+
+    addFooters(doc);
+
+    const dateStr = new Date().toISOString().slice(0, 10);
+    doc.save(`Complete_Startup_Journey_Report_${dateStr}.pdf`);
+
+    setGenerating(false);
+    setGenerated(true);
+    setTimeout(() => setGenerated(false), 5000);
+  };
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px', marginTop: '24px' }}>
+      <button
+        onClick={generateAllPDF}
+        disabled={generating}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          padding: '16px 32px',
+          background: generating
+            ? 'linear-gradient(135deg, #666 0%, #444 100%)'
+            : 'linear-gradient(135deg, #FFD700 0%, #FF8C00 100%)',
+          color: '#0a0a0a',
+          fontWeight: 800,
+          fontSize: '16px',
+          borderRadius: '14px',
+          border: '2px solid rgba(255, 215, 0, 0.3)',
+          cursor: generating ? 'wait' : 'pointer',
+          boxShadow: generating ? 'none' : '0 4px 20px rgba(255, 215, 0, 0.3)',
+          transition: 'all 0.2s ease',
+          opacity: generating ? 0.7 : 1,
+        }}
+      >
+        {generating ? (
+          <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}>&#x21bb;</span>
+            Generating Complete Report...
+          </span>
+        ) : (
+          <>
+            <Download size={20} />
+            Download Complete Startup Journey (Tasks 1–100)
+          </>
+        )}
+      </button>
+      {generated && (
+        <span style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+          fontSize: '13px',
+          color: '#FFD700',
+          fontWeight: 600,
+          animation: 'fadeIn 0.3s ease',
+        }}>
+          <CheckCircle size={16} />
+          Complete Report Generated Successfully!
         </span>
       )}
     </div>

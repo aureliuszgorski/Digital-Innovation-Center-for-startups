@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { TASKS, STAGES, SUB_STAGES, TYPE_COLORS, STAGE_COLORS } from '@/data/tasks';
 import { useGarage } from '@/context/GarageContext';
 import { Check, ChevronRight, ChevronDown, Star } from 'lucide-react';
-import PhasePDFGenerator from '@/components/PhasePDFGenerator';
+import PhasePDFGenerator, { AllPhasesPDFGenerator } from '@/components/PhasePDFGenerator';
 
 export default function TasksPage() {
   const { completedTasks, completeTask, uncompleteTask } = useGarage();
@@ -12,12 +12,25 @@ export default function TasksPage() {
   const [search, setSearch] = useState('');
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
 
-  const PHASE_PDF_MAP: Record<string, 1|2|3|4|5> = {
+  const PHASE_PDF_MAP: Record<string, number> = {
     'Start with Problems': 1,
     'Plan Mission': 2,
     'Assemble Core Team': 3,
     'Collect Ideas': 4,
     'Determine Business Models': 5,
+    'Make Starter-Kits': 6,
+    'Develop MVP': 7,
+    'Define Brand': 8,
+    'Raise (Pre-)Seed Capital': 9,
+    'Build Functions': 10,
+    'Set Up KPI Reports': 11,
+    'Go Live': 12,
+    'Raise Growth Capital': 13,
+    'Build Culture': 14,
+    'Learn from Data': 15,
+    'Optimize Functions': 16,
+    'Best Practices': 17,
+    'Independence': 18,
   };
 
   const stageTasks = activeStage === 'ALL' ? TASKS : TASKS.filter(t => t.stage === activeStage);
@@ -110,7 +123,7 @@ export default function TasksPage() {
                 })}
                 {PHASE_PDF_MAP[ss.name] && (
                   <div className="mt-3 mb-1 flex justify-end">
-                    <PhasePDFGenerator phase={PHASE_PDF_MAP[ss.name]} />
+                    <PhasePDFGenerator phase={PHASE_PDF_MAP[ss.name] as 1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18} />
                   </div>
                 )}
               </div>
@@ -118,6 +131,12 @@ export default function TasksPage() {
           </div>
         );
       })}
+      {/* Download Complete Journey */}
+      <div className="mt-8 mb-4 p-6 rounded-2xl border border-white/[0.08] bg-white/[0.02]">
+        <h2 className="text-lg font-bold text-white mb-1">Complete Startup Journey Report</h2>
+        <p className="text-sm text-white/40 mb-4">Download a comprehensive PDF combining all 18 phases and 100 tasks into one document.</p>
+        <AllPhasesPDFGenerator />
+      </div>
     </div>
   );
 }

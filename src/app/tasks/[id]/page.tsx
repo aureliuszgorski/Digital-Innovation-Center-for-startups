@@ -25,6 +25,8 @@ import Task17Redesign from '@/components/Task17Redesign';
 import Task18Redesign from '@/components/Task18Redesign';
 import Task19Redesign from '@/components/Task19Redesign';
 import Task20Redesign from '@/components/Task20Redesign';
+import TasksRedesigns from '@/components/TasksRedesigns';
+
 
 
 const AI_ROLES = [
@@ -416,6 +418,16 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
       </>
     );
   }
+
+  if (taskNum >= 21 && taskNum <= 100) {
+    return (
+      <>
+        <TasksRedesigns taskNum={taskNum} />
+        <AIMentorPanel taskNum={taskNum} taskTitle={task.title} />
+      </>
+    );
+  }
+
 
 
   const done = completedTasks.includes(taskNum);
